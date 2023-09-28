@@ -9,42 +9,26 @@
 			</div>
 
 			<div v-if="!quizFinished">
-				<Question
-					v-if="!quizFinished"
-					:data="quizData.questions[currentQuestionIndex]"
-					:index="currentQuestionIndex"
-					:lastIndex="quizData.questions.length - 1"
+				<Question v-if="!quizFinished" :data="quizData.questions[currentQuestionIndex]"
+					:index="currentQuestionIndex" :lastIndex="quizData.questions.length - 1"
 					:preventChangingAnswers="quizData.prevent_changing_answers"
-					:savedAnswer="savedAnswer[currentQuestionIndex]"
-					:displayIndividualOptionFeedback="
-						quizData.display_individual_option_feedback
-					"
-					@next="nextQuestion"
-					@previous="previousQuestion"
-					@update-results="updateResults"
-					@submit="submitQuiz"
-					@save-answers="storeCurrentAnswer"
-				/>
+					:savedAnswer="savedAnswer[currentQuestionIndex]" :displayIndividualOptionFeedback="quizData.display_individual_option_feedback
+						" @next="nextQuestion" @previous="previousQuestion" @update-results="updateResults" @submit="submitQuiz"
+					@save-answers="storeCurrentAnswer" />
 				<div class="page-info">{{ currentPageInfo }}</div>
 				<div v-if="quizData.end_quiz_button" class="quizComplete">
-					<button class="btn btn-secondary"
-						v-if="allQuestionsSubmitted"
-						@click="
-							quizData.calculate_quiz_score ? showQuizFeedback() : finishQuiz()
-						"
-					>
+					<button class="btn btn-secondary" v-if="allQuestionsSubmitted" @click="
+						quizData.calculate_quiz_score ? showQuizFeedback() : finishQuiz()
+						">
 						{{
 							quizData.calculate_quiz_score
-								? $t("button.getFeedback")
-								: $t("button.completeQuiz")
+							? $t("button.getFeedback")
+							: $t("button.completeQuiz")
 						}}
 					</button>
 				</div>
 			</div>
-			<div
-				v-if="quizData.calculate_quiz_score && quizFinished"
-				class="quiz-score"
-			>
+			<div v-if="quizData.calculate_quiz_score && quizFinished" class="quiz-score">
 				<h2>{{ $t("quiz.results") }}</h2>
 				<p>
 					{{ $t("quiz.score", [score, quizData.questions.length, percentage]) }}
@@ -52,10 +36,7 @@
 				<p v-if="passed">{{ $t("quiz.passed") }}</p>
 				<p v-else>{{ $t("quiz.failed") }}</p>
 			</div>
-			<div
-				v-if="quizFinished && !quizData.calculate_quiz_score"
-				class="quiz-completed"
-			>
+			<div v-if="quizFinished && !quizData.calculate_quiz_score" class="quiz-completed">
 				{{ $t("quiz.completed") }}
 			</div>
 		</div>
@@ -129,13 +110,13 @@ export default {
 
 		async loadQuizData() {
 			try {
-				const response_en = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_en.txt");
-				//const response_en = await fetch("QuizData_en.txt");
+				// const response_en = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_en.txt");
+				const response_en = await fetch("QuizData_en.txt");
 				const rawData_en = await response_en.text();
 				this.quizData_en = JSON.parse(JSON.parse(rawData_en));
 
-				const response_fr = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_fr.txt");
-				//const response_fr = await fetch("QuizData_fr.txt");
+				// const response_fr = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_fr.txt");
+				const response_fr = await fetch("QuizData_fr.txt");
 				const rawData_fr = await response_fr.text();
 				this.quizData_fr = JSON.parse(JSON.parse(rawData_fr));
 				const RandomOrder = Math.random() - 0.5;
@@ -290,7 +271,7 @@ export default {
 	width: 0;
 }
 
-#app input[type="radio"] + label {
+#app input[type="radio"]+label {
 	display: block;
 	position: relative;
 	padding-left: 40px;
@@ -301,7 +282,7 @@ export default {
 	color: #000;
 }
 
-#app input[type="radio"] + label:before {
+#app input[type="radio"]+label:before {
 	content: "";
 	display: block;
 	position: absolute;
@@ -314,7 +295,7 @@ export default {
 	background-color: #fff;
 }
 
-#app input[type="radio"]:checked + label:after {
+#app input[type="radio"]:checked+label:after {
 	content: "";
 	display: block;
 	width: 12px;
@@ -326,7 +307,7 @@ export default {
 	background-color: #000000;
 }
 
-#app input[type="radio"]:focus + label:before {
+#app input[type="radio"]:focus+label:before {
 	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
 }
 
@@ -339,11 +320,11 @@ input[type="checkbox"] {
 	width: 0;
 }
 
-#app input[type="checkbox"]:focus + label:before {
+#app input[type="checkbox"]:focus+label:before {
 	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
 }
 
-#app input[type="checkbox"] + label {
+#app input[type="checkbox"]+label {
 	display: block;
 	position: relative;
 	padding-left: 40px;
@@ -354,7 +335,7 @@ input[type="checkbox"] {
 	color: #000;
 }
 
-#app input[type="checkbox"] + label:before {
+#app input[type="checkbox"]+label:before {
 	content: "";
 	display: inline-block;
 	position: absolute;
@@ -367,12 +348,12 @@ input[type="checkbox"] {
 	background-color: #fff;
 }
 
-#app input[type="checkbox"]:checked + label:before {
+#app input[type="checkbox"]:checked+label:before {
 	background-color: #ffffff;
 	border-color: #000000;
 }
 
-#app input[type="checkbox"]:checked + label:after {
+#app input[type="checkbox"]:checked+label:after {
 	content: "";
 	position: absolute;
 	left: 7px;
@@ -393,7 +374,7 @@ ul {
 	padding-bottom: 1.25rem;
 }
 
-#app input[type="checkbox"] + label::before {
+#app input[type="checkbox"]+label::before {
 	margin-right: 10px;
 }
 
@@ -413,6 +394,7 @@ ul {
 	font-weight: 500;
 	padding: 1.5rem 0;
 }
+
 #app .header {
 	padding: 1.5rem 1.4rem 1rem;
 	position: relative;
@@ -461,6 +443,7 @@ ul {
 .quiz-body {
 	padding: 0 2.1rem;
 }
+
 .button-control {
 	display: flex;
 	align-items: flex-end;
