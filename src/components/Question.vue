@@ -548,6 +548,8 @@ label {
 
 .IncorrectFeedback {
 	--border-feedback-bg-colour: #9e0404;
+	--feedback-bg-colour: #f3e2e2;
+	--feedback-colour: #2b0000;
 }
 
 .IncorrectFeedback .feedback-icon::after {
