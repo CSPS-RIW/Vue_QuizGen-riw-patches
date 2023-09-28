@@ -138,10 +138,10 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
-			<button v-else :disabled="preventNextChange" @click="submit">
+			<button class="btn btn-secondary" v-else :disabled="preventNextChange" @click="submit">
 				{{ $t("question.submit") }}
 			</button>
 		</div>
@@ -502,7 +502,7 @@ h2 {
 	margin-bottom: 0.5em;
 }
 
-button {
+/* button {
 	display: inline-block;
 	margin-top: 1em;
 	padding: 0.5em 1em;
@@ -517,7 +517,7 @@ button {
 button:disabled {
 	background-color: #ccc;
 	cursor: not-allowed;
-}
+} */
 
 .correct-answer {
 	color: green;
@@ -533,5 +533,9 @@ button:disabled {
 
 .xmark {
 	margin-left: 5px;
+}
+
+label {
+	user-select: none;
 }
 </style>
