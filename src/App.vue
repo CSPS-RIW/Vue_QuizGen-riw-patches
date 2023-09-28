@@ -191,16 +191,8 @@ export default {
 /* General styles */
 
 #app {
-	/* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	line-height: 1.6;
-	color: #333; */
 	max-width: 800px;
 	margin: 40px auto;
-	/*
-	padding: 30px;
-	background-color: #ffffff;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	border-radius: 40px; */
 }
 
 .quiz {
@@ -210,42 +202,6 @@ export default {
 	margin: 60px auto;
 	position: relative;
 }
-
-/* #app h1 {
-	font-size: 2em;
-	color: #333;
-	margin-bottom: 20px;
-} */
-
-/* #app h2 {
-	font-size: 1.3em;
-	color: #444;
-	margin-bottom: 15px;
-} */
-
-/* #app button {
-	background-color: #4e5b73;
-	border: none;
-	color: white;
-	padding: 12px 20px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
-	border-radius: 5px;
-	transition: background-color 0.3s;
-} */
-
-/* #app button:hover {
-	background-color: #5e35b1;
-}
-
-#app .language-toggle {
-	display: flex;
-	justify-content: flex-end;
-} */
 
 .navigation-control {
 	display: flex;

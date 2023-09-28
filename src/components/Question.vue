@@ -48,13 +48,13 @@
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
 							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" />
 						<label :for="`option-${qindex}`" :class="{
-								'correct-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === true,
-								'incorrect-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === false,
-							}">
+							'correct-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === true,
+							'incorrect-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false,
+						}">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === true
@@ -131,6 +131,7 @@
 		<div class="quiz-body" aria-live="polite">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'">
+					<span class="icon-span" aria-hidden="true"></span>
 					<div v-html="isCorrect ? data.correct_feedback : data.incorrect_feedback"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
