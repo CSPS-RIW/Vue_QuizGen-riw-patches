@@ -9,6 +9,7 @@
 			</div>
 
 			<div v-if="!quizFinished">
+				<div class="page-info sr-only" aria-live="polite">{{ currentPageInfo }}</div>
 				<Question v-if="!quizFinished" :data="quizData.questions[currentQuestionIndex]"
 					:index="currentQuestionIndex" :lastIndex="quizData.questions.length - 1"
 					:preventChangingAnswers="quizData.prevent_changing_answers"
