@@ -497,28 +497,6 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-	font-weight: bold;
-	font-size: 1.5em;
-	margin-bottom: 0.5em;
-}
-
-/* button {
-	display: inline-block;
-	margin-top: 1em;
-	padding: 0.5em 1em;
-	background-color: #2c3e50;
-	color: #fff;
-	font-weight: 200;
-	cursor: pointer;
-	border: none;
-	border-radius: 5px;
-}
-
-button:disabled {
-	background-color: #ccc;
-	cursor: not-allowed;
-} */
 
 .correct-answer {
 	color: green;
