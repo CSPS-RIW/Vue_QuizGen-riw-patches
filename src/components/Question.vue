@@ -48,13 +48,13 @@
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
 							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" />
 						<label :for="`option-${qindex}`" :class="{
-								'correct-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === true,
-								'incorrect-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === false,
-							}">
+							'correct-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === true,
+							'incorrect-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false,
+						}">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === true
@@ -131,6 +131,7 @@
 		<div class="quiz-body" aria-live="polite">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'">
+					<span class="feedback-icon" aria-hidden="true"></span>
 					<div v-html="isCorrect ? data.correct_feedback : data.incorrect_feedback"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
@@ -496,29 +497,6 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-	font-weight: bold;
-	font-size: 1.5em;
-	margin-bottom: 0.5em;
-}
-
-/* button {
-	display: inline-block;
-	margin-top: 1em;
-	padding: 0.5em 1em;
-	background-color: #2c3e50;
-	color: #fff;
-	font-weight: 200;
-	cursor: pointer;
-	border: none;
-	border-radius: 5px;
-}
-
-button:disabled {
-	background-color: #ccc;
-	cursor: not-allowed;
-} */
-
 .correct-answer {
 	color: green;
 }
@@ -537,5 +515,56 @@ button:disabled {
 
 label {
 	user-select: none;
+}
+
+/* Feedback styles */
+.CorrectFeedback,
+.IncorrectFeedback {
+	position: relative;
+	outline-style: solid;
+	outline-width: 2px;
+	outline-color: var(--border-feedback-bg-colour);
+	background-color: var(--feedback-bg-colour);
+	color: var(--feedback-colour);
+	border-radius: 12px;
+	padding: 1rem 1.5rem;
+	margin-bottom: 15px;
+}
+
+.CorrectFeedback .feedback-icon::after,
+.IncorrectFeedback .feedback-icon::after {
+	content: '';
+	color: var(--border-feedback-colour);
+	background-color: var(--border-feedback-bg-colour);
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -10px;
+	right: -11px;
+	background-origin: padding-box;
+	padding: 0px 0px 0px 9px;
+	border-radius: 50%;
+}
+
+.IncorrectFeedback {
+	--border-feedback-bg-colour: #9e0404;
+	--feedback-bg-colour: #f3e2e2;
+	--feedback-colour: #2b0000;
+}
+
+.IncorrectFeedback .feedback-icon::after {
+	content: '\2716';
+	padding: 0px 0px 0px 7px;
+}
+
+.CorrectFeedback {
+	--border-feedback-bg-colour: #18703a;
+	--feedback-bg-colour: #e2f3e8;
+	--feedback-colour: #072b00;
+}
+
+.CorrectFeedback .feedback-icon::after {
+	content: '\2714';
+	padding: 0px 0px 0px 7px;
 }
 </style>
