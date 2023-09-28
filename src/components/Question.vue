@@ -534,4 +534,8 @@ button:disabled {
 .xmark {
 	margin-left: 5px;
 }
+
+label {
+	user-select: none;
+}
 </style>
