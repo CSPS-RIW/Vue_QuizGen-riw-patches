@@ -129,11 +129,13 @@ export default {
 
 		async loadQuizData() {
 			try {
-				const response_en = await fetch("QuizData_en.txt");
+				const response_en = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_en.txt");
+				//const response_en = await fetch("QuizData_en.txt");
 				const rawData_en = await response_en.text();
 				this.quizData_en = JSON.parse(JSON.parse(rawData_en));
 
-				const response_fr = await fetch("QuizData_fr.txt");
+				const response_fr = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_fr.txt");
+				//const response_fr = await fetch("QuizData_fr.txt");
 				const rawData_fr = await response_fr.text();
 				this.quizData_fr = JSON.parse(JSON.parse(rawData_fr));
 				const RandomOrder = Math.random() - 0.5;
