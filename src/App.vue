@@ -192,6 +192,8 @@ export default {
 :root {
 	--border-feedback-colour: #fff;
 	--border-feedback-bg-colour: #369;
+	--feedback-bg-colour: #fff;
+	--feedback-colour: #333;
 }
 
 #app {
