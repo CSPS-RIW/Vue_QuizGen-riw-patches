@@ -131,7 +131,7 @@
 		<div class="quiz-body" aria-live="polite">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'">
-					<span class="icon-span" aria-hidden="true"></span>
+					<span class="feedback-icon" aria-hidden="true"></span>
 					<div v-html="isCorrect ? data.correct_feedback : data.incorrect_feedback"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
@@ -497,7 +497,6 @@ export default {
 </script>
 
 <style scoped>
-
 .correct-answer {
 	color: green;
 }
@@ -516,5 +515,50 @@ export default {
 
 label {
 	user-select: none;
+}
+
+/* Feedback styles */
+.CorrectFeedback,
+.IncorrectFeedback {
+	position: relative;
+	outline-style: solid;
+	outline-width: 2px;
+	outline-color: var(--border-feedback-bg-colour);
+	border-radius: 12px;
+	padding: 1rem 1.5rem;
+	margin-bottom: 15px;
+}
+
+.CorrectFeedback .feedback-icon::after,
+.IncorrectFeedback .feedback-icon::after {
+	content: '';
+	color: var(--border-feedback-colour);
+	background-color: var(--border-feedback-bg-colour);
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -10px;
+	right: -11px;
+	background-origin: padding-box;
+	padding: 0px 0px 0px 9px;
+	border-radius: 50%;
+}
+
+.IncorrectFeedback {
+	--border-feedback-bg-colour: #9e0404;
+}
+
+.IncorrectFeedback .feedback-icon::after {
+	content: '\2716';
+	padding: 0px 0px 0px 7px;
+}
+
+.CorrectFeedback {
+	--border-feedback-bg-colour: #18703a;
+}
+
+.CorrectFeedback .feedback-icon::after {
+	content: '\2714';
+	padding: 0px 0px 0px 7px;
 }
 </style>
