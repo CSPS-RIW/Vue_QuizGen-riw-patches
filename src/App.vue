@@ -189,6 +189,10 @@ export default {
 </script>
 <style>
 /* General styles */
+:root {
+	--border-feedback-colour: #fff;
+	--border-feedback-bg-colour: #369;
+}
 
 #app {
 	max-width: 800px;
