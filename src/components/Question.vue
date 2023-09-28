@@ -524,6 +524,8 @@ label {
 	outline-style: solid;
 	outline-width: 2px;
 	outline-color: var(--border-feedback-bg-colour);
+	background-color: var(--feedback-bg-colour);
+	color: var(--feedback-colour);
 	border-radius: 12px;
 	padding: 1rem 1.5rem;
 	margin-bottom: 15px;
@@ -555,6 +557,8 @@ label {
 
 .CorrectFeedback {
 	--border-feedback-bg-colour: #18703a;
+	--feedback-bg-colour: #e2f3e8;
+	--feedback-colour: #072b00;
 }
 
 .CorrectFeedback .feedback-icon::after {
