@@ -138,7 +138,7 @@
 			</div>
 		</div>
 
-		<div class="quiz-body button-control">
+		<div class="quiz-body button-control" v-if="!isCorrect">
 			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
@@ -289,6 +289,7 @@ export default {
 		next() {
 			// Store the state of userAnswers and submitted arrays
 			this.storeQuestionState(this.index);
+			this.isCorrect = false;
 			this.$emit("next");
 		},
 		previous() {
