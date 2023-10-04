@@ -288,7 +288,7 @@ input[type="checkbox"] {
 #app input[type="checkbox"]:focus+label:before {
 	-webkit-box-shadow:  0px 0px 8px 4px #3b99fc, 2px 5px 16px 0px #0B325E, 0px 0px 21px 5px rgba(125,195,255,0.3); 
 box-shadow:  0px 0px 8px 4px #3b99fc, 2px 5px 16px 0px #0B325E, 0px 0px 21px 5px rgba(125,195,255,0.3);
-outline: 3px solid #333;
+outline: 3px solid #141414;
 }
 
 #app input[type="checkbox"]+label {
