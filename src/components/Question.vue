@@ -46,7 +46,7 @@
 
 					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
-							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" />
+							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" @keyup.enter="checkWithEnter(qindex)" />
 						<label :for="`option-${qindex}`" :class="{
 							'correct-answer':
 								displayIndividualOptionFeedback &&
@@ -464,6 +464,14 @@ export default {
 			}
 			this.userAnswers[qindex] = event.target.checked;
 		},
+		checkWithEnter(qindex) {
+		// Handle checking the checkbox on Enter key press
+		if (this.data.question_type === 'single-select') {
+		this.handleAnswerChange(qindex);
+		} else if (this.data.question_type === 'multiple-select') {
+		this.userAnswers[qindex] = !this.userAnswers[qindex];
+		}
+  },
 	},
 	mounted() {
 		if (this.data) {
