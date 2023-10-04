@@ -291,7 +291,7 @@ input[type="checkbox"] {
 	display: block;
 	position: relative;
 	padding-left: 40px;
-	margin-bottom: 20px;
+	padding-bottom: 20px;
 	cursor: pointer;
 	font-size: 18px;
 	line-height: 20px;

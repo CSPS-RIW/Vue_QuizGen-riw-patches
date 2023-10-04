@@ -44,7 +44,7 @@
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
 
-					<div v-for="(option, qindex) in data.answer_options" :key="qindex">
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
 							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" />
 						<label :for="`option-${qindex}`" :class="{
@@ -193,6 +193,8 @@ export default {
 
 	computed: {
 		preventNextChange() {
+			
+
 			return (
 				(this.preventChangingAnswers && this.isSubmitted) || this.isSubmitted
 			);
@@ -567,4 +569,11 @@ label {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
 }
+
+#app input:disabled+label {
+	color: #333333;
+	opacity: .5;
+	cursor: not-allowed;
+}
+
 </style>
