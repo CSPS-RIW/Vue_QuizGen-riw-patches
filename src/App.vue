@@ -207,6 +207,7 @@ export default {
 	box-shadow: 2px 2px 25px #cecece, 0px 4px 0 #cecece;
 	margin: 60px auto;
 	position: relative;
+	border: 1px solid #fff;
 }
 
 .navigation-control {
@@ -377,6 +378,7 @@ ul {
 	padding: 1.5rem 1.4rem 1rem;
 	position: relative;
 	text-align: center;
+	border-bottom: 1px solid #fff;
 }
 
 #app .header:before {
@@ -401,6 +403,7 @@ ul {
 	background: rgb(255, 255, 255);
 	border-radius: 20px;
 	border-top: 2px solid rgb(238, 238, 238);
+	border-bottom: 2px solid #fff;
 }
 
 .quiz-progressbar {
