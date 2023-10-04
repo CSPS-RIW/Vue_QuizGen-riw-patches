@@ -139,19 +139,19 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
-			<button class="btn btn-secondary" v-else :disabled="preventNextChange" @click="submit">
+			<button class="btn btn-secondary btn-fix" v-else :disabled="preventNextChange" @click="submit">
 				{{ $t("question.submit") }}
 			</button>
 		</div>
 
 		<div v-if="!(index === 0 && index === lastIndex)" class="navigation-control">
-			<button @click="previous" :disabled="index === 0">
+			<button class="btn btn-secondary btn-fix" @click="previous" :disabled="index === 0">
 				{{ $t("question.previous") }}
 			</button>
-			<button :disabled="index === lastIndex" @click="next">
+			<button class="btn btn-secondary btn-fix" :disabled="index === lastIndex" @click="next">
 				{{ $t("question.next") }}
 			</button>
 		</div>
@@ -582,6 +582,10 @@ label {
 	color: #333333;
 	opacity: .5;
 	cursor: not-allowed;
+}
+
+button.btn.btn-secondary.btn-fix:focus {
+	box-shadow: 0 0 0 2px #006fbf;
 }
 
 </style>
