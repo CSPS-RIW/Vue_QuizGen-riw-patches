@@ -224,7 +224,7 @@ export default {
 	font-size: 1.3em;
 	color: #333;
 	margin-bottom: 15px;
-	padding: 1.4rem;
+	padding: 1.4rem 0.7rem;
 }
 
 .instruction-text {
@@ -234,7 +234,7 @@ export default {
 	font-size: 1.3em;
 	color: #333;
 	/* margin-bottom: 15px; */
-	padding: 0.75rem;
+	padding: 0.75rem 0;
 }
 
 #app input[type="radio"] {
