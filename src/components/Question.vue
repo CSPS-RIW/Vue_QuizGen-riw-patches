@@ -4,16 +4,12 @@
 			<div id="Header" class="header">
 				<div>
 					<span class="question-text">{{ data.question_text }}</span>
-					
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
 			<div class="quiz-body">
-				<div>
-					<p class="instruction-text">{{ data.instructions }}</p>
-				</div>
 				<fieldset>
-					<!-- <legend>{{ data.instructions }}</legend> -->
+					<legend>{{ data.instructions }}</legend>
 					<div
 						v-for="(option, qindex) in shuffledAnswerOptions"
 						:key="qindex">
@@ -72,11 +68,8 @@
 			</div>
 
 			<div class="quiz-body">
-				<div>
-					<p class="instruction-text">{{ data.instructions }}</p>
-				</div>
 				<fieldset>
-					<!-- <legend>{{ data.instructions }}</legend> -->
+					<legend>{{ data.instructions }}</legend>
 
 					<div
 						v-for="(option, qindex) in data.answer_options"
