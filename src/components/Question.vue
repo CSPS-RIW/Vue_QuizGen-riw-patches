@@ -589,10 +589,10 @@ button.btn.btn-secondary.btn-fix:focus {
 }
 
 button.btn.btn-primary.btn-primary-fix:focus {
-	box-shadow: 0 0 0 2px #006fbf;
+	outline: 2px solid #006fbf;
 }
 
-button.btn.btn-primary.btn-primary-fix:focus:hover {
+button.btn.btn-primary.btn-primary-fix:hover:focus {
 	border: 1px solid white;
 }
 

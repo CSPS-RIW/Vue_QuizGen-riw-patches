@@ -440,6 +440,5 @@ button.btn.btn-secondary.btn-fix:focus:hover {
 	border: 1px solid #fff;
 	color: #fff;
 }
-
 </style>
 
