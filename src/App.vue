@@ -227,6 +227,16 @@ export default {
 	padding: 1rem;
 }
 
+.instruction-text {
+	position: relative;
+	display: block;
+	text-align: left;
+	font-size: 1.3em;
+	color: #333;
+	/* margin-bottom: 15px; */
+	padding: 0.75rem;
+}
+
 #app input[type="radio"] {
 	position: absolute;
 	opacity: 0;
