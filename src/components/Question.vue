@@ -142,7 +142,7 @@
 			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
-			<button class="btn btn-secondary btn-fix" v-else :disabled="preventNextChange" @click="submit">
+			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
 				{{ $t("question.submit") }}
 			</button>
 		</div>
@@ -465,13 +465,13 @@ export default {
 			this.userAnswers[qindex] = event.target.checked;
 		},
 		checkWithEnter(qindex) {
-		// Handle checking the checkbox on Enter key press
-		if (this.data.question_type === 'single-select') {
-		this.handleAnswerChange(qindex);
-		} else if (this.data.question_type === 'multiple-select') {
-		this.userAnswers[qindex] = !this.userAnswers[qindex];
-		}
-  },
+			// Handle checking the checkbox on Enter key press
+			if (this.data.question_type === 'single-select') {
+			this.handleAnswerChange(qindex);
+			} else if (this.data.question_type === 'multiple-select') {
+			this.userAnswers[qindex] = !this.userAnswers[qindex];
+			}
+	},
 	},
 	mounted() {
 		if (this.data) {
@@ -586,6 +586,14 @@ label {
 
 button.btn.btn-secondary.btn-fix:focus {
 	box-shadow: 0 0 0 2px #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:focus {
+	box-shadow: 0 0 0 2px #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:focus:hover {
+	border: 1px solid white;
 }
 
 </style>
