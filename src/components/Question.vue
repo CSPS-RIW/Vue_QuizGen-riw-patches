@@ -10,55 +10,32 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-					<div
-						v-for="(option, qindex) in shuffledAnswerOptions"
-						:key="qindex">
+					<div v-for="(option, qindex) in shuffledAnswerOptions" :key="qindex">
 						{{ option.correct_answer }}
-						<input
-							:key="qindex"
-							type="radio"
-							:id="`option-${qindex}`"
-							:name="`question-${index}`"
-							:value="qindex"
-							:checked="userAnswers === qindex"
-							:disabled="preventNextChange"
+						<input :key="qindex" type="radio" :id="`option-${qindex}`" :name="`question-${index}`"
+							:value="qindex" :checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label
-							:for="`option-${qindex}`"
-							:class="
-								displayIndividualOptionFeedback
-									? answerClasses(qindex)
-									: ''
+						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
+								? answerClasses(qindex)
+								: ''
 							">
 							{{ option.text }}
-							<span
-								v-if="
-									displayIndividualOptionFeedback &&
-									userAnswers !== undefined &&
-									isAnswerCorrect(qindex) === true &&
-									userAnswers === qindex
-								"
-								class="checkmark"
-								>&#10003;</span
-							>
-							<span
-								v-else-if="
-									displayIndividualOptionFeedback &&
-									userAnswers !== undefined &&
-									isAnswerCorrect(qindex) === false &&
-									userAnswers === qindex
-								"
-								class="xmark"
-								>&#10007;</span
-							>
+							<span v-if="displayIndividualOptionFeedback &&
+								userAnswers !== undefined &&
+								isAnswerCorrect(qindex) === true &&
+								userAnswers === qindex
+								" class="checkmark">&#10003;</span>
+							<span v-else-if="displayIndividualOptionFeedback &&
+								userAnswers !== undefined &&
+								isAnswerCorrect(qindex) === false &&
+								userAnswers === qindex
+								" class="xmark">&#10007;</span>
 						</label>
 					</div>
 				</fieldset>
 			</div>
 		</div>
-		<div
-			v-if="
-				data.question_type === 'multiple-select' && userAnswers?.length
+		<div v-if="data.question_type === 'multiple-select' && userAnswers?.length
 			">
 			<div id="Header" class="header">
 				<div>
@@ -71,51 +48,30 @@
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
 
-					<div
-						v-for="(option, qindex) in data.answer_options"
-						:key="qindex"
-						class="input-wrapper">
-						<input
-							type="checkbox"
-							v-model="userAnswers[qindex]"
-							:value="qindex"
-							:id="`option-${qindex}`"
-							:disabled="preventNextChange"
-							@change="
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
+						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
+							:disabled="preventNextChange" @change="
 								updateMultipleSelectAnswer(
 									$event,
 									index,
 									qindex,
 								)
-							"
-							@keyup.enter="checkWithEnter(qindex)" />
-						<label
-							:for="`option-${qindex}`"
-							:class="{
-								'correct-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === true,
-								'incorrect-answer':
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === false,
-							}">
+								" @keyup.enter="checkWithEnter(qindex)" />
+						<label :for="`option-${qindex}`" :class="{
+							'correct-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === true,
+							'incorrect-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false,
+						}">
 							{{ option.text }}
-							<span
-								v-if="
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === true
-								"
-								class="checkmark"
-								>&#10003;</span
-							>
-							<span
-								v-else-if="
-									displayIndividualOptionFeedback &&
-									isAnswerCorrect(qindex) === false
-								"
-								class="xmark"
-								>&#10007;</span
-							>
+							<span v-if="displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === true
+								" class="checkmark">&#10003;</span>
+							<span v-else-if="displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false
+								" class="xmark">&#10007;</span>
 						</label>
 					</div>
 				</fieldset>
@@ -130,45 +86,25 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-					<div
-						v-for="(option, qindex) in data.answer_options"
-						:key="qindex">
-						<input
-							type="radio"
-							:value="qindex"
-							:id="`option-${qindex}`"
-							:name="`question-${index}`"
-							:checked="userAnswers === qindex"
-							:disabled="preventNextChange"
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex">
+						<input type="radio" :value="qindex" :id="`option-${qindex}`" :name="`question-${index}`"
+							:checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label
-							:for="`option-${qindex}`"
-							:class="
-								displayIndividualOptionFeedback
-									? answerClasses(qindex)
-									: ''
+						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
+								? answerClasses(qindex)
+								: ''
 							">
 							{{ option.text }}
-							<span
-								v-if="
-									displayIndividualOptionFeedback &&
-									userAnswers !== undefined &&
-									isAnswerCorrect(qindex) === true &&
-									userAnswers === qindex
-								"
-								class="checkmark"
-								>&#10003;</span
-							>
-							<span
-								v-else-if="
-									displayIndividualOptionFeedback &&
-									userAnswers !== undefined &&
-									isAnswerCorrect(qindex) === false &&
-									userAnswers === qindex
-								"
-								class="xmark"
-								>&#10007;</span
-							>
+							<span v-if="displayIndividualOptionFeedback &&
+								userAnswers !== undefined &&
+								isAnswerCorrect(qindex) === true &&
+								userAnswers === qindex
+								" class="checkmark">&#10003;</span>
+							<span v-else-if="displayIndividualOptionFeedback &&
+								userAnswers !== undefined &&
+								isAnswerCorrect(qindex) === false &&
+								userAnswers === qindex
+								" class="xmark">&#10007;</span>
 						</label>
 					</div>
 				</fieldset>
@@ -181,10 +117,7 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-					<FillInTheBlanks
-						:question="data"
-						:previousAnswer="userAnswers"
-						:preventChange="preventNextChange"
+					<FillInTheBlanks :question="data" :previousAnswer="userAnswers" :preventChange="preventNextChange"
 						@userAnswered="handleFillInTheBlanks"></FillInTheBlanks>
 				</fieldset>
 			</div>
@@ -196,34 +129,25 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-					<HighlightCorrectSentence
-						:question="data"
-						:previousAnswer="userAnswers"
-						:preventChange="preventNextChange"
-						@userAnswered="handleHighlightCorrectSentence">
+					<HighlightCorrectSentence :question="data" :previousAnswer="userAnswers"
+						:preventChange="preventNextChange" @userAnswered="handleHighlightCorrectSentence">
 					</HighlightCorrectSentence>
 				</fieldset>
 			</div>
 		</div>
 		<div v-if="data.question_type === 'drag-and-drop'">
-			<drag-drop-activity
-				:data_uncategorized-notes="mappedData.uncategorizedNotes"
-				:data_categories="mappedData.categories"
-				@submit="handleDragDropSubmit"></drag-drop-activity>
+			<drag-drop-activity :data_uncategorized-notes="mappedData.uncategorizedNotes"
+				:data_categories="mappedData.categories" @submit="handleDragDropSubmit"></drag-drop-activity>
 		</div>
 
 		<div class="quiz-body" aria-live="polite">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
-				<div
-					:class="
-						isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
+				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
 					">
 					<span class="feedback-icon" aria-hidden="true"></span>
-					<div
-						v-html="
-							isCorrect
-								? data.correct_feedback
-								: data.incorrect_feedback
+					<div v-html="isCorrect
+							? data.correct_feedback
+							: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
@@ -231,34 +155,24 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button
-				class="btn btn-secondary"
-				v-if="!preventChangingAnswers && isSubmitted"
-				@click="reset">
-				{{ $t('question.retry') }}
+			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+				{{ $t("question.retry") }}
 			</button>
-			<button
-				class="btn btn-secondary"
-				v-else
-				:disabled="preventNextChange"
-				@click="submit">
-				{{ $t('question.submit') }}
+			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
+				{{ $t("question.submit") }}
 			</button>
 		</div>
 
-		<div
-			v-if="!(index === 0 && index === lastIndex)"
-			class="navigation-control">
-			<button @click="previous" :disabled="index === 0">
-				{{ $t('question.previous') }}
+		<div v-if="!(index === 0 && index === lastIndex)" class="navigation-control">
+			<button class="btn btn-secondary btn-fix" @click="previous" :disabled="index === 0">
+				{{ $t("question.previous") }}
 			</button>
-			<button :disabled="index === lastIndex" @click="next">
-				{{ $t('question.next') }}
+			<button class="btn btn-secondary btn-fix" :disabled="index === lastIndex" @click="next">
+				{{ $t("question.next") }}
 			</button>
 		</div>
 	</div>
 </template>
-
 <script>
 	import DragDropActivity from '@/components/DragDropActivity.vue';
 	import FillInTheBlanks from '@/components/FillInTheBlanks.vue';
@@ -625,80 +539,86 @@
 </script>
 
 <style scoped>
-	.correct-answer {
-		color: green;
-	}
+.correct-answer {
+	color: green;
+}
 
-	.incorrect-answer {
-		color: red;
-	}
+.incorrect-answer {
+	color: red;
+}
 
-	.checkmark {
-		margin-left: 5px;
-	}
+.checkmark {
+	margin-left: 5px;
+}
 
-	.xmark {
-		margin-left: 5px;
-	}
+.xmark {
+	margin-left: 5px;
+}
 
-	label {
-		user-select: none;
-	}
+label {
+	user-select: none;
+}
 
-	/* Feedback styles */
-	.CorrectFeedback,
-	.IncorrectFeedback {
-		position: relative;
-		outline-style: solid;
-		outline-width: 2px;
-		outline-color: var(--border-feedback-bg-colour);
-		background-color: var(--feedback-bg-colour);
-		color: var(--feedback-colour);
-		border-radius: 12px;
-		padding: 1rem 1.5rem;
-		margin-bottom: 15px;
-	}
+/* Feedback styles */
+.CorrectFeedback,
+.IncorrectFeedback {
+	position: relative;
+	outline-style: solid;
+	outline-width: 2px;
+	outline-color: var(--border-feedback-bg-colour);
+	background-color: var(--feedback-bg-colour);
+	color: var(--feedback-colour);
+	border-radius: 12px;
+	padding: 1rem 1.5rem;
+	margin-bottom: 15px;
+}
 
-	.CorrectFeedback .feedback-icon::after,
-	.IncorrectFeedback .feedback-icon::after {
-		content: '';
-		color: var(--border-feedback-colour);
-		background-color: var(--border-feedback-bg-colour);
-		width: 30px;
-		height: 30px;
-		position: absolute;
-		top: -10px;
-		right: -11px;
-		background-origin: padding-box;
-		padding: 0px 0px 0px 9px;
-		border-radius: 50%;
-	}
+.CorrectFeedback .feedback-icon::after,
+.IncorrectFeedback .feedback-icon::after {
+	content: '';
+	color: var(--border-feedback-colour);
+	background-color: var(--border-feedback-bg-colour);
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -10px;
+	right: -11px;
+	background-origin: padding-box;
+	padding: 0px 0px 0px 9px;
+	border-radius: 50%;
+}
 
-	.IncorrectFeedback {
-		--border-feedback-bg-colour: #9e0404;
-		--feedback-bg-colour: #f3e2e2;
-		--feedback-colour: #2b0000;
-	}
+.IncorrectFeedback {
+	--border-feedback-bg-colour: #9e0404;
+	--feedback-bg-colour: #f3e2e2;
+	--feedback-colour: #2b0000;
+}
 
-	.IncorrectFeedback .feedback-icon::after {
-		content: '\2716';
-		padding: 0px 0px 0px 7px;
-	}
+.IncorrectFeedback .feedback-icon::after {
+	content: '\2716';
+	padding: 0px 0px 0px 7px;
+}
 
-	.CorrectFeedback {
-		--border-feedback-bg-colour: #18703a;
-		--feedback-bg-colour: #e2f3e8;
-		--feedback-colour: #072b00;
-	}
+.CorrectFeedback {
+	--border-feedback-bg-colour: #18703a;
+	--feedback-bg-colour: #e2f3e8;
+	--feedback-colour: #072b00;
+}
 
-	.CorrectFeedback .feedback-icon::after {
-		content: '\2714';
-		padding: 0px 0px 0px 7px;
-	}
+.CorrectFeedback .feedback-icon::after {
+	content: '\2714';
+	padding: 0px 0px 0px 7px;
+}
 
-	#app input:disabled + label {
-		color: #333333;
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
+button.btn.btn-secondary.btn-fix:focus {
+	box-shadow: 0 0 0 2px #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:focus {
+	outline: 2px solid #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:hover:focus {
+	border: 1px solid white;
+}
 </style>
