@@ -2,7 +2,7 @@
 	<div id="quiz">
 		<div v-if="isQuizDataLoaded">
 			<div v-if="quizData.allowLanguageSwitching" class="language-toggle">
-				<button @click="toggleLanguage">{{ buttonText }}</button>
+				<button class="btn btn-secondary btn-fix" @click="toggleLanguage">{{ buttonText }}</button>
 			</div>
 			<div v-if="quizData.quiz_title">
 				<h1>{{ quizData.quiz_title }}</h1>
@@ -29,13 +29,8 @@
 					@save-answers="storeCurrentAnswer" />
 				<div class="page-info">{{ currentPageInfo }}</div>
 				<div v-if="quizData.end_quiz_button" class="quizComplete">
-					<button
-						class="btn btn-secondary"
-						v-if="allQuestionsSubmitted"
-						@click="
-							quizData.calculate_quiz_score
-								? showQuizFeedback()
-								: finishQuiz()
+					<button class="btn btn-secondary btn-fix" v-if="allQuestionsSubmitted" @click="
+						quizData.calculate_quiz_score ? showQuizFeedback() : finishQuiz()
 						">
 						{{
 							quizData.calculate_quiz_score
@@ -467,10 +462,29 @@
 		padding: 0 2.1rem;
 	}
 
-	.button-control {
-		display: flex;
-		align-items: flex-end;
-		justify-content: flex-end;
-		padding-bottom: 2.1rem;
-	}
+.quiz-feedback {
+	padding-top: 20px;
+	display: block;
+	text-align: left;
+}
+
+.quiz-body {
+	padding: 0 2.1rem;
+}
+
+.button-control {
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+	padding-bottom: 2.1rem;
+}
+
+button.btn.btn-secondary.btn-fix:focus {
+	box-shadow: none;
+	outline: 2px solid #006fbf;
+}
+button.btn.btn-secondary.btn-fix:focus:hover {
+	border: 1px solid #fff;
+	color: #fff;
+}
 </style>
