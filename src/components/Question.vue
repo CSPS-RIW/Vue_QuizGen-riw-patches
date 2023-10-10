@@ -16,8 +16,8 @@
 							:value="qindex" :checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
 						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
-								? answerClasses(qindex)
-								: ''
+							? answerClasses(qindex)
+							: ''
 							">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
@@ -91,8 +91,8 @@
 							:checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
 						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
-								? answerClasses(qindex)
-								: ''
+							? answerClasses(qindex)
+							: ''
 							">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
@@ -146,8 +146,8 @@
 					">
 					<span class="feedback-icon" aria-hidden="true"></span>
 					<div v-html="isCorrect
-							? data.correct_feedback
-							: data.incorrect_feedback
+						? data.correct_feedback
+						: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
@@ -155,7 +155,8 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted && !isCorrect"
+				@click="reset">
 				{{ $t("question.retry") }}
 			</button>
 			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
@@ -174,368 +175,369 @@
 	</div>
 </template>
 <script>
-	import DragDropActivity from '@/components/DragDropActivity.vue';
-	import FillInTheBlanks from '@/components/FillInTheBlanks.vue';
-	import HighlightCorrectSentence from '@/components/HighlightCorrectSentence.vue';
+import DragDropActivity from '@/components/DragDropActivity.vue';
+import FillInTheBlanks from '@/components/FillInTheBlanks.vue';
+import HighlightCorrectSentence from '@/components/HighlightCorrectSentence.vue';
 
-	export default {
-		emits: ['next', 'previous', 'save-answers', 'submit'],
-		components: {
-			DragDropActivity,
-			FillInTheBlanks,
-			HighlightCorrectSentence,
+export default {
+	emits: ['next', 'previous', 'save-answers', 'submit'],
+	components: {
+		DragDropActivity,
+		FillInTheBlanks,
+		HighlightCorrectSentence,
+	},
+	props: {
+		data: Object,
+		index: Number,
+		lastIndex: Number,
+		preventChangingAnswers: Boolean,
+		displayIndividualOptionFeedback: Boolean,
+		savedAnswer: Object,
+	},
+	data() {
+		return {
+			listType: '-',
+			userAnswers: null,
+			submitted: Array(this.lastIndex + 1).fill(null),
+			isCorrect: false,
+			answerStates: {
+				submitted: Array(this.lastIndex + 1).fill(false),
+				userAnswers: [],
+			},
+		};
+	},
+
+	computed: {
+		preventNextChange() {
+			return (
+				(this.preventChangingAnswers && this.isSubmitted) ||
+				this.isSubmitted
+			);
 		},
-		props: {
-			data: Object,
-			index: Number,
-			lastIndex: Number,
-			preventChangingAnswers: Boolean,
-			displayIndividualOptionFeedback: Boolean,
-			savedAnswer: Object,
+		isSubmitted() {
+			return this.submitted[this.index] === true;
 		},
-		data() {
+
+		shuffledAnswerOptions() {
+			if (this.data.randomize_answers) {
+				return this.shuffleArray(this.data.answer_options);
+			} else {
+				return this.data.answer_options;
+			}
+		},
+		preventChange() {
+			return this.$parent.quizData.prevent_changing_answers;
+		},
+		feedbackRecap() {
+			return this.$parent.quizData.feedback_recap;
+		},
+		mappedData() {
+			const uncategorizedNotes = this.data.answer_options.map(
+				(option, index) => ({
+					id: index + 1,
+					text: option.draggable,
+					selected: false,
+				}),
+			);
+
+			const categories = this.data.answer_options.map(
+				(option, index) => ({
+					name: option.dropzone,
+					notes: [],
+				}),
+			);
+
 			return {
-				listType: '-',
-				userAnswers: null,
-				submitted: Array(this.lastIndex + 1).fill(null),
-				isCorrect: false,
-				answerStates: {
-					submitted: Array(this.lastIndex + 1).fill(false),
-					userAnswers: [],
-				},
+				uncategorizedNotes,
+				categories,
 			};
 		},
-
-		computed: {
-			preventNextChange() {
-				return (
-					(this.preventChangingAnswers && this.isSubmitted) ||
-					this.isSubmitted
-				);
-			},
-			isSubmitted() {
-				return this.submitted[this.index] === true;
-			},
-
-			shuffledAnswerOptions() {
-				if (this.data.randomize_answers) {
-					return this.shuffleArray(this.data.answer_options);
-				} else {
-					return this.data.answer_options;
-				}
-			},
-			preventChange() {
-				return this.$parent.quizData.prevent_changing_answers;
-			},
-			feedbackRecap() {
-				return this.$parent.quizData.feedback_recap;
-			},
-			mappedData() {
-				const uncategorizedNotes = this.data.answer_options.map(
-					(option, index) => ({
-						id: index + 1,
-						text: option.draggable,
-						selected: false,
-					}),
-				);
-
-				const categories = this.data.answer_options.map(
-					(option, index) => ({
-						name: option.dropzone,
-						notes: [],
-					}),
-				);
-
-				return {
-					uncategorizedNotes,
-					categories,
-				};
-			},
+	},
+	methods: {
+		handleAnswerChange(optionIndex) {
+			if (this.data.question_type === 'multiple-select') {
+				this.userAnswers[optionIndex] =
+					!this.userAnswers[optionIndex];
+			} else {
+				this.userAnswers = optionIndex;
+			}
 		},
-		methods: {
-			handleAnswerChange(optionIndex) {
-				if (this.data.question_type === 'multiple-select') {
-					this.userAnswers[optionIndex] =
-						!this.userAnswers[optionIndex];
-				} else {
-					this.userAnswers = optionIndex;
-				}
-			},
-			handleFillInTheBlanks(answers) {
-				this.userAnswers = answers;
-			},
-			handleHighlightCorrectSentence(answers) {
-				this.userAnswers = answers;
-			},
-			initializeUserAnswers() {
-				if (
-					this.data.question_type === 'single-select' ||
-					this.data.question_type === 'true-false'
-				) {
-					this.userAnswers = this.savedAnswer
-						? this.savedAnswer.userAnswers
-						: null;
-				} else if (this.data.question_type === 'multiple-select') {
-					this.userAnswers = this.savedAnswer
-						? this.savedAnswer.userAnswers
-						: new Array(this.data.answer_options.length).fill(
-								false,
-						  );
-				} else if (this.data.question_type === 'fill-in-the-blanks') {
-					this.userAnswers = this.savedAnswer
-						? this.savedAnswer.userAnswers
-						: new Array(this.data.answer_options.length).fill(0);
-				}
-			},
-
-			shuffleArray(array) {
-				let currentIndex = array.length,
-					temporaryValue,
-					randomIndex;
-
-				// While there remain elements to shuffle...
-				while (0 !== currentIndex) {
-					// Pick a remaining element...
-					randomIndex = Math.floor(Math.random() * currentIndex);
-					currentIndex -= 1;
-
-					// And swap it with the current element.
-					temporaryValue = array[currentIndex];
-					array[currentIndex] = array[randomIndex];
-					array[randomIndex] = temporaryValue;
-				}
-
-				return array;
-			},
-			next() {
-				// Store the state of userAnswers and submitted arrays
-				this.storeQuestionState(this.index);
-				this.$emit('next');
-			},
-			previous() {
-				// Store the state of userAnswers and submitted arrays
-				this.storeQuestionState(this.index);
-				this.$emit('previous');
-			},
-			storeQuestionState() {
-				this.answerStates = {
-					userAnswers: this.userAnswers,
-					submitted: this.submitted[this.index],
-				};
-				this.$emit('save-answers', this.answerStates, this.index);
-			},
-			restoreQuestionState() {
-				if (this.savedAnswer) {
-					this.userAnswers = this.savedAnswer.userAnswers;
-					this.submitted[this.index] = this.savedAnswer.submitted;
-				} else {
-					this.initializeUserAnswers();
-				}
-			},
-
-			submit() {
-				// Check if the user hasn't selected an answer
-				if (
-					(this.data.question_type === 'single-select' ||
-						this.data.question_type === 'true-false') &&
-					(this.userAnswers === null ||
-						this.userAnswers === undefined)
-				) {
-					alert(this.$t('question.pleaseSelectAnswer'));
-					return;
-				} else if (
-					this.data.question_type === 'multiple-select' &&
-					!this.userAnswers.some((selected) => selected)
-				) {
-					alert(this.$t('question.pleaseSelectAtLeastOneAnswer'));
-					return;
-				} else if (
-					this.data.question_type === 'fill-in-the-blanks' &&
-					!this.userAnswers.every((answer) => answer !== 0)
-				) {
-					alert(this.$t('question.pleaseSelectEveryTerm'));
-					return;
-				}
-
-				this.submitted[this.index] = true; // Set submitted for the current page to true
-				const isCorrect = this.checkIfCorrect(
-					this.data,
-					this.userAnswers,
-				);
-				this.isCorrect = isCorrect;
-				this.$emit('submit', isCorrect, this.index);
-			},
-
-			reset() {
-				this.submitted[this.index] = false;
-				if (this.data.question_type === 'multiple-select') {
-					this.userAnswers = this.userAnswers.map(() => false);
-				} else {
-					this.userAnswers = null;
-				}
-			},
-
-			checkIfCorrect(question, userAnswer) {
-				let isCorrect = false;
-
-				switch (question.question_type) {
-					case 'single-select':
-						if (userAnswer !== null && userAnswer !== undefined) {
-							isCorrect =
-								question.answer_options[userAnswer].isCorrect;
-						}
-						break;
-					case 'multiple-select':
-						if (userAnswer) {
-							const totalCorrectOptions =
-								question.answer_options.filter(
-									(option) => option.isCorrect,
-								).length;
-
-							const selectedOptionsCount = userAnswer.reduce(
-								(count, selected) => count + (selected ? 1 : 0),
-								0,
-							);
-
-							const selectedCorrectOptions = userAnswer.reduce(
-								(count, selected, index) => {
-									return (
-										count +
-										(selected &&
-										question.answer_options[index].isCorrect
-											? 1
-											: 0)
-									);
-								},
-								0,
-							);
-
-							isCorrect =
-								totalCorrectOptions ===
-									selectedCorrectOptions &&
-								selectedOptionsCount === selectedCorrectOptions;
-						} else {
-							isCorrect = false;
-						}
-						break;
-					case 'true-false':
-						isCorrect = userAnswer === question.correct_answer;
-						break;
-					case 'fill-in-the-blanks':
-						isCorrect = question.answer_options.every(
-							(options, index) =>
-								options.correctIndex === userAnswer[index],
-						);
-
-						break;
-					case 'drag-and-drop':
-						// Assuming the correct order is represented by the correct_answer array
-						isCorrect = true;
-
-						break;
-					default:
-						break;
-				}
-
-				return isCorrect;
-			},
-
-			isAnswerCorrect(qindex) {
-				if (!this.isSubmitted || this.userAnswers === undefined) {
-					return null;
-				}
-
-				const userAnswer = this.userAnswers;
-
-				if (this.data.question_type === 'multiple-select') {
-					return (
-						userAnswer[qindex] ===
-						this.data.answer_options[qindex].isCorrect
-					);
-				} else {
-					return (
-						userAnswer === qindex &&
-						this.data.answer_options[qindex].isCorrect
-					);
-				}
-			},
-
-			answerClasses(qindex) {
-				if (!this.isSubmitted || this.userAnswers === undefined) {
-					return {};
-				}
-
-				const isCorrect = this.isCorrect;
-
-				if (
-					this.data.question_type === 'single-select' ||
-					this.data.question_type === 'true-false'
-				) {
-					if (isCorrect && this.userAnswers === qindex) {
-						return { 'correct-answer': true };
-					} else if (this.userAnswers === qindex) {
-						return { 'incorrect-answer': true };
-					}
-				} else if (this.data.question_type === 'multiple-select') {
-					if (isCorrect === true) {
-						return { 'correct-answer': true };
-					} else if (isCorrect === false) {
-						return { 'incorrect-answer': true };
-					}
-				}
-				return {};
-			},
-
-			handleDragDropSubmit(categoriesWithNotes) {
-				// Logic to handle the submitted data
-				// categoriesWithNotes is an array of categories containing an object "notes" which is an array
-			},
-			updateMultipleSelectAnswer(event, index, qindex) {
-				if (!this.userAnswers) {
-					this.userAnswers = {};
-				}
-				this.userAnswers[qindex] = event.target.checked;
-			},
-			checkWithEnter(qindex) {
-				// Handle checking the checkbox on Enter key press
-				if (this.data.question_type === 'single-select') {
-					this.handleAnswerChange(qindex);
-				} else if (this.data.question_type === 'multiple-select') {
-					this.userAnswers[qindex] = !this.userAnswers[qindex];
-				}
-			},
+		handleFillInTheBlanks(answers) {
+			this.userAnswers = answers;
 		},
-		mounted() {
-			if (this.data) {
-				// this.answerStates.submitted = Array(this.lastIndex + 1).fill(false);
-				// this.answerStates.userAnswers = Array(this.lastIndex + 1).fill(null);
+		handleHighlightCorrectSentence(answers) {
+			this.userAnswers = answers;
+		},
+		initializeUserAnswers() {
+			if (
+				this.data.question_type === 'single-select' ||
+				this.data.question_type === 'true-false'
+			) {
+				this.userAnswers = this.savedAnswer
+					? this.savedAnswer.userAnswers
+					: null;
+			} else if (this.data.question_type === 'multiple-select') {
+				this.userAnswers = this.savedAnswer
+					? this.savedAnswer.userAnswers
+					: new Array(this.data.answer_options.length).fill(
+						false,
+					);
+			} else if (this.data.question_type === 'fill-in-the-blanks') {
+				this.userAnswers = this.savedAnswer
+					? this.savedAnswer.userAnswers
+					: new Array(this.data.answer_options.length).fill(0);
+			}
+		},
+
+		shuffleArray(array) {
+			let currentIndex = array.length,
+				temporaryValue,
+				randomIndex;
+
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+
+			return array;
+		},
+		next() {
+			// Store the state of userAnswers and submitted arrays
+			this.storeQuestionState(this.index);
+			this.isCorrect = false;
+			this.$emit("next");
+		},
+		previous() {
+			// Store the state of userAnswers and submitted arrays
+			this.storeQuestionState(this.index);
+			this.$emit("previous");
+		},
+		storeQuestionState() {
+			this.answerStates = {
+				userAnswers: this.userAnswers,
+				submitted: this.submitted[this.index],
+			};
+			this.$emit("save-answers", this.answerStates, this.index);
+		},
+		restoreQuestionState() {
+			if (this.savedAnswer) {
+				this.userAnswers = this.savedAnswer.userAnswers;
+				this.submitted[this.index] = this.savedAnswer.submitted;
+			} else {
 				this.initializeUserAnswers();
 			}
 		},
 
-		watch: {
-			savedAnswer: {
-				handler(newSavedAnswer) {
-					if (newSavedAnswer) {
-						this.userAnswers = newSavedAnswer.userAnswers;
-					} else {
-						this.initializeUserAnswers();
-					}
-				},
-				immediate: true,
-			},
-			index: {
-				handler() {
-					// Restore the state of userAnswers and submitted arrays
-					this.restoreQuestionState(this.index);
-					// if (this.userAnswers === undefined) {
-					// 	this.initializeUserAnswers();
-					// }
-				},
-				immediate: true,
-			},
+		submit() {
+			// Check if the user hasn't selected an answer
+			if (
+				(this.data.question_type === 'single-select' ||
+					this.data.question_type === 'true-false') &&
+				(this.userAnswers === null ||
+					this.userAnswers === undefined)
+			) {
+				alert(this.$t('question.pleaseSelectAnswer'));
+				return;
+			} else if (
+				this.data.question_type === 'multiple-select' &&
+				!this.userAnswers.some((selected) => selected)
+			) {
+				alert(this.$t('question.pleaseSelectAtLeastOneAnswer'));
+				return;
+			} else if (
+				this.data.question_type === 'fill-in-the-blanks' &&
+				!this.userAnswers.every((answer) => answer !== 0)
+			) {
+				alert(this.$t('question.pleaseSelectEveryTerm'));
+				return;
+			}
+
+			this.submitted[this.index] = true; // Set submitted for the current page to true
+			const isCorrect = this.checkIfCorrect(
+				this.data,
+				this.userAnswers,
+			);
+			this.isCorrect = isCorrect;
+			this.$emit('submit', isCorrect, this.index);
 		},
-	};
+
+		reset() {
+			this.submitted[this.index] = false;
+			if (this.data.question_type === 'multiple-select') {
+				this.userAnswers = this.userAnswers.map(() => false);
+			} else {
+				this.userAnswers = null;
+			}
+		},
+
+		checkIfCorrect(question, userAnswer) {
+			let isCorrect = false;
+
+			switch (question.question_type) {
+				case 'single-select':
+					if (userAnswer !== null && userAnswer !== undefined) {
+						isCorrect =
+							question.answer_options[userAnswer].isCorrect;
+					}
+					break;
+				case 'multiple-select':
+					if (userAnswer) {
+						const totalCorrectOptions =
+							question.answer_options.filter(
+								(option) => option.isCorrect,
+							).length;
+
+						const selectedOptionsCount = userAnswer.reduce(
+							(count, selected) => count + (selected ? 1 : 0),
+							0,
+						);
+
+						const selectedCorrectOptions = userAnswer.reduce(
+							(count, selected, index) => {
+								return (
+									count +
+									(selected &&
+										question.answer_options[index].isCorrect
+										? 1
+										: 0)
+								);
+							},
+							0,
+						);
+
+						isCorrect =
+							totalCorrectOptions ===
+							selectedCorrectOptions &&
+							selectedOptionsCount === selectedCorrectOptions;
+					} else {
+						isCorrect = false;
+					}
+					break;
+				case 'true-false':
+					isCorrect = userAnswer === question.correct_answer;
+					break;
+				case 'fill-in-the-blanks':
+					isCorrect = question.answer_options.every(
+						(options, index) =>
+							options.correctIndex === userAnswer[index],
+					);
+
+					break;
+				case 'drag-and-drop':
+					// Assuming the correct order is represented by the correct_answer array
+					isCorrect = true;
+
+					break;
+				default:
+					break;
+			}
+
+			return isCorrect;
+		},
+
+		isAnswerCorrect(qindex) {
+			if (!this.isSubmitted || this.userAnswers === undefined) {
+				return null;
+			}
+
+			const userAnswer = this.userAnswers;
+
+			if (this.data.question_type === 'multiple-select') {
+				return (
+					userAnswer[qindex] ===
+					this.data.answer_options[qindex].isCorrect
+				);
+			} else {
+				return (
+					userAnswer === qindex &&
+					this.data.answer_options[qindex].isCorrect
+				);
+			}
+		},
+
+		answerClasses(qindex) {
+			if (!this.isSubmitted || this.userAnswers === undefined) {
+				return {};
+			}
+
+			const isCorrect = this.isCorrect;
+
+			if (
+				this.data.question_type === 'single-select' ||
+				this.data.question_type === 'true-false'
+			) {
+				if (isCorrect && this.userAnswers === qindex) {
+					return { 'correct-answer': true };
+				} else if (this.userAnswers === qindex) {
+					return { 'incorrect-answer': true };
+				}
+			} else if (this.data.question_type === 'multiple-select') {
+				if (isCorrect === true) {
+					return { 'correct-answer': true };
+				} else if (isCorrect === false) {
+					return { 'incorrect-answer': true };
+				}
+			}
+			return {};
+		},
+
+		handleDragDropSubmit(categoriesWithNotes) {
+			// Logic to handle the submitted data
+			// categoriesWithNotes is an array of categories containing an object "notes" which is an array
+		},
+		updateMultipleSelectAnswer(event, index, qindex) {
+			if (!this.userAnswers) {
+				this.userAnswers = {};
+			}
+			this.userAnswers[qindex] = event.target.checked;
+		},
+		checkWithEnter(qindex) {
+			// Handle checking the checkbox on Enter key press
+			if (this.data.question_type === 'single-select') {
+				this.handleAnswerChange(qindex);
+			} else if (this.data.question_type === 'multiple-select') {
+				this.userAnswers[qindex] = !this.userAnswers[qindex];
+			}
+		},
+	},
+	mounted() {
+		if (this.data) {
+			// this.answerStates.submitted = Array(this.lastIndex + 1).fill(false);
+			// this.answerStates.userAnswers = Array(this.lastIndex + 1).fill(null);
+			this.initializeUserAnswers();
+		}
+	},
+
+	watch: {
+		savedAnswer: {
+			handler(newSavedAnswer) {
+				if (newSavedAnswer) {
+					this.userAnswers = newSavedAnswer.userAnswers;
+				} else {
+					this.initializeUserAnswers();
+				}
+			},
+			immediate: true,
+		},
+		index: {
+			handler() {
+				// Restore the state of userAnswers and submitted arrays
+				this.restoreQuestionState(this.index);
+				// if (this.userAnswers === undefined) {
+				// 	this.initializeUserAnswers();
+				// }
+			},
+			immediate: true,
+		},
+	},
+};
 </script>
 
 <style scoped>
