@@ -155,7 +155,8 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted && !isCorrect"
+				@click="reset">
 				{{ $t("question.retry") }}
 			</button>
 			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
