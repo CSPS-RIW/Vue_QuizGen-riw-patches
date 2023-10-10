@@ -483,4 +483,20 @@ ul {
 	justify-content: flex-end;
 	padding-bottom: 2.1rem;
 }
+
+/*  Button styles  */
+button.btn.btn-secondary:focus,
+button.btn.btn-secondary:hover {
+	border: 1px solid #fff;
+	outline: 2px solid #006fbf;
+	color: #fff;
+	background-color: var(--slate-blue);
+}
+
+button.btn.btn-primary:focus,
+button.btn.btn-primary:hover {
+	outline: 2px solid #006fbf;
+	border: 1px solid white;
+	background-color: var(--school-purple);
+}
 </style>

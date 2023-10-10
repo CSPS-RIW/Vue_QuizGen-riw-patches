@@ -611,17 +611,5 @@ label {
 	padding: 0px 0px 0px 7px;
 }
 
-/*  Button styles  */
-button.btn.btn-secondary:focus,
-button.btn.btn-secondary:hover {
-	border: 1px solid #fff;
-	outline: 2px solid #006fbf;
-	color: #fff;
-}
 
-button.btn.btn-primary:focus,
-button.btn.btn-primary:hover {
-	outline: 2px solid #006fbf;
-	border: 1px solid white;
-}
 </style>
