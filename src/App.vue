@@ -204,6 +204,23 @@ export default {
 <style>
 /* General styles */
 :root {
+	/* school colours */
+	--school-purple: #3f2a56;
+	--school-purple-drk: #18032f;
+	--slate-blue: #4e5b73;
+	--true-blue: #1c578a;
+	--true-light: #226aa8;
+	--system-gray: #f1f5fb;
+	--body-grey: #333;
+	--white-heat: #fff;
+	--horizontal-rule: #ddd;
+	--off-white: #f6f7f8;
+	--hyperlink-blue: #2b4380;
+	--hyperlink-hover: #0535d2;
+	--hyperlink-visited: #7834bc;
+	--hyperlink-menu: #337ab7;
+
+	/* feedback props */
 	--border-feedback-colour: #fff;
 	--border-feedback-bg-colour: #369;
 	--feedback-bg-colour: #fff;
