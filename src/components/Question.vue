@@ -15,7 +15,9 @@
 						<input :key="qindex" type="radio" :id="`option-${qindex}`" :name="`question-${index}`"
 							:value="qindex" :checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback ? answerClasses(qindex) : ''
+						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
+							? answerClasses(qindex)
+							: ''
 							">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
@@ -33,20 +35,28 @@
 				</fieldset>
 			</div>
 		</div>
-		<div v-if="data.question_type === 'multiple-select' && userAnswers?.length">
+		<div v-if="data.question_type === 'multiple-select' && userAnswers?.length
+			">
 			<div id="Header" class="header">
 				<div>
 					<span class="question-text">{{ data.question_text }}</span>
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
+
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
 
-					<div v-for="(option, qindex) in data.answer_options" :key="qindex">
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
-							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)" />
+							:disabled="preventNextChange" @change="
+								updateMultipleSelectAnswer(
+									$event,
+									index,
+									qindex,
+								)
+								" @keyup.enter="checkWithEnter(qindex)" />
 						<label :for="`option-${qindex}`" :class="{
 							'correct-answer':
 								displayIndividualOptionFeedback &&
@@ -80,7 +90,9 @@
 						<input type="radio" :value="qindex" :id="`option-${qindex}`" :name="`question-${index}`"
 							:checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback ? answerClasses(qindex) : ''
+						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
+							? answerClasses(qindex)
+							: ''
 							">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
@@ -130,41 +142,44 @@
 
 		<div class="quiz-body" aria-live="polite">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
-				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'">
+				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
+					">
 					<span class="feedback-icon" aria-hidden="true"></span>
-					<div v-html="isCorrect ? data.correct_feedback : data.incorrect_feedback"></div>
+					<div v-html="isCorrect
+						? data.correct_feedback
+						: data.incorrect_feedback
+						"></div>
 					<div v-html="data.generic_feedback"></div>
 				</div>
 			</div>
 		</div>
 
-		<div class="quiz-body button-control" v-if="!isCorrect">
-			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
+		<div class="quiz-body button-control">
+			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
-			<button class="btn btn-secondary" v-else :disabled="preventNextChange" @click="submit">
+			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
 				{{ $t("question.submit") }}
 			</button>
 		</div>
 
 		<div v-if="!(index === 0 && index === lastIndex)" class="navigation-control">
-			<button @click="previous" :disabled="index === 0">
+			<button class="btn btn-secondary btn-fix" @click="previous" :disabled="index === 0">
 				{{ $t("question.previous") }}
 			</button>
-			<button :disabled="index === lastIndex" @click="next">
+			<button class="btn btn-secondary btn-fix" :disabled="index === lastIndex" @click="next">
 				{{ $t("question.next") }}
 			</button>
 		</div>
 	</div>
 </template>
-
 <script>
-import DragDropActivity from "@/components/DragDropActivity.vue";
-import FillInTheBlanks from "@/components/FillInTheBlanks.vue";
-import HighlightCorrectSentence from "@/components/HighlightCorrectSentence.vue";
+import DragDropActivity from '@/components/DragDropActivity.vue';
+import FillInTheBlanks from '@/components/FillInTheBlanks.vue';
+import HighlightCorrectSentence from '@/components/HighlightCorrectSentence.vue';
 
 export default {
-	emits: ["next", "previous", "save-answers", "submit"],
+	emits: ['next', 'previous', 'save-answers', 'submit'],
 	components: {
 		DragDropActivity,
 		FillInTheBlanks,
@@ -180,7 +195,7 @@ export default {
 	},
 	data() {
 		return {
-			listType: "-",
+			listType: '-',
 			userAnswers: null,
 			submitted: Array(this.lastIndex + 1).fill(null),
 			isCorrect: false,
@@ -194,7 +209,8 @@ export default {
 	computed: {
 		preventNextChange() {
 			return (
-				(this.preventChangingAnswers && this.isSubmitted) || this.isSubmitted
+				(this.preventChangingAnswers && this.isSubmitted) ||
+				this.isSubmitted
 			);
 		},
 		isSubmitted() {
@@ -220,13 +236,15 @@ export default {
 					id: index + 1,
 					text: option.draggable,
 					selected: false,
-				})
+				}),
 			);
 
-			const categories = this.data.answer_options.map((option, index) => ({
-				name: option.dropzone,
-				notes: [],
-			}));
+			const categories = this.data.answer_options.map(
+				(option, index) => ({
+					name: option.dropzone,
+					notes: [],
+				}),
+			);
 
 			return {
 				uncategorizedNotes,
@@ -236,8 +254,9 @@ export default {
 	},
 	methods: {
 		handleAnswerChange(optionIndex) {
-			if (this.data.question_type === "multiple-select") {
-				this.userAnswers[optionIndex] = !this.userAnswers[optionIndex];
+			if (this.data.question_type === 'multiple-select') {
+				this.userAnswers[optionIndex] =
+					!this.userAnswers[optionIndex];
 			} else {
 				this.userAnswers = optionIndex;
 			}
@@ -250,17 +269,19 @@ export default {
 		},
 		initializeUserAnswers() {
 			if (
-				this.data.question_type === "single-select" ||
-				this.data.question_type === "true-false"
+				this.data.question_type === 'single-select' ||
+				this.data.question_type === 'true-false'
 			) {
 				this.userAnswers = this.savedAnswer
 					? this.savedAnswer.userAnswers
 					: null;
-			} else if (this.data.question_type === "multiple-select") {
+			} else if (this.data.question_type === 'multiple-select') {
 				this.userAnswers = this.savedAnswer
 					? this.savedAnswer.userAnswers
-					: new Array(this.data.answer_options.length).fill(false);
-			} else if (this.data.question_type === "fill-in-the-blanks") {
+					: new Array(this.data.answer_options.length).fill(
+						false,
+					);
+			} else if (this.data.question_type === 'fill-in-the-blanks') {
 				this.userAnswers = this.savedAnswer
 					? this.savedAnswer.userAnswers
 					: new Array(this.data.answer_options.length).fill(0);
@@ -316,35 +337,39 @@ export default {
 		submit() {
 			// Check if the user hasn't selected an answer
 			if (
-				(this.data.question_type === "single-select" ||
-					this.data.question_type === "true-false") &&
-				(this.userAnswers === null || this.userAnswers === undefined)
+				(this.data.question_type === 'single-select' ||
+					this.data.question_type === 'true-false') &&
+				(this.userAnswers === null ||
+					this.userAnswers === undefined)
 			) {
-				alert(this.$t("question.pleaseSelectAnswer"));
+				alert(this.$t('question.pleaseSelectAnswer'));
 				return;
 			} else if (
-				this.data.question_type === "multiple-select" &&
+				this.data.question_type === 'multiple-select' &&
 				!this.userAnswers.some((selected) => selected)
 			) {
-				alert(this.$t("question.pleaseSelectAtLeastOneAnswer"));
+				alert(this.$t('question.pleaseSelectAtLeastOneAnswer'));
 				return;
 			} else if (
-				this.data.question_type === "fill-in-the-blanks" &&
+				this.data.question_type === 'fill-in-the-blanks' &&
 				!this.userAnswers.every((answer) => answer !== 0)
 			) {
-				alert(this.$t("question.pleaseSelectEveryTerm"));
+				alert(this.$t('question.pleaseSelectEveryTerm'));
 				return;
 			}
 
 			this.submitted[this.index] = true; // Set submitted for the current page to true
-			const isCorrect = this.checkIfCorrect(this.data, this.userAnswers);
+			const isCorrect = this.checkIfCorrect(
+				this.data,
+				this.userAnswers,
+			);
 			this.isCorrect = isCorrect;
-			this.$emit("submit", isCorrect, this.index);
+			this.$emit('submit', isCorrect, this.index);
 		},
 
 		reset() {
 			this.submitted[this.index] = false;
-			if (this.data.question_type === "multiple-select") {
+			if (this.data.question_type === 'multiple-select') {
 				this.userAnswers = this.userAnswers.map(() => false);
 			} else {
 				this.userAnswers = null;
@@ -355,49 +380,56 @@ export default {
 			let isCorrect = false;
 
 			switch (question.question_type) {
-				case "single-select":
+				case 'single-select':
 					if (userAnswer !== null && userAnswer !== undefined) {
-						isCorrect = question.answer_options[userAnswer].isCorrect;
+						isCorrect =
+							question.answer_options[userAnswer].isCorrect;
 					}
 					break;
-				case "multiple-select":
+				case 'multiple-select':
 					if (userAnswer) {
-						const totalCorrectOptions = question.answer_options.filter(
-							(option) => option.isCorrect
-						).length;
+						const totalCorrectOptions =
+							question.answer_options.filter(
+								(option) => option.isCorrect,
+							).length;
 
 						const selectedOptionsCount = userAnswer.reduce(
 							(count, selected) => count + (selected ? 1 : 0),
-							0
+							0,
 						);
 
 						const selectedCorrectOptions = userAnswer.reduce(
 							(count, selected, index) => {
 								return (
 									count +
-									(selected && question.answer_options[index].isCorrect ? 1 : 0)
+									(selected &&
+										question.answer_options[index].isCorrect
+										? 1
+										: 0)
 								);
 							},
-							0
+							0,
 						);
 
 						isCorrect =
-							totalCorrectOptions === selectedCorrectOptions &&
+							totalCorrectOptions ===
+							selectedCorrectOptions &&
 							selectedOptionsCount === selectedCorrectOptions;
 					} else {
 						isCorrect = false;
 					}
 					break;
-				case "true-false":
+				case 'true-false':
 					isCorrect = userAnswer === question.correct_answer;
 					break;
-				case "fill-in-the-blanks":
+				case 'fill-in-the-blanks':
 					isCorrect = question.answer_options.every(
-						(options, index) => options.correctIndex === userAnswer[index]
+						(options, index) =>
+							options.correctIndex === userAnswer[index],
 					);
 
 					break;
-				case "drag-and-drop":
+				case 'drag-and-drop':
 					// Assuming the correct order is represented by the correct_answer array
 					isCorrect = true;
 
@@ -416,13 +448,15 @@ export default {
 
 			const userAnswer = this.userAnswers;
 
-			if (this.data.question_type === "multiple-select") {
+			if (this.data.question_type === 'multiple-select') {
 				return (
-					userAnswer[qindex] === this.data.answer_options[qindex].isCorrect
+					userAnswer[qindex] ===
+					this.data.answer_options[qindex].isCorrect
 				);
 			} else {
 				return (
-					userAnswer === qindex && this.data.answer_options[qindex].isCorrect
+					userAnswer === qindex &&
+					this.data.answer_options[qindex].isCorrect
 				);
 			}
 		},
@@ -435,19 +469,19 @@ export default {
 			const isCorrect = this.isCorrect;
 
 			if (
-				this.data.question_type === "single-select" ||
-				this.data.question_type === "true-false"
+				this.data.question_type === 'single-select' ||
+				this.data.question_type === 'true-false'
 			) {
 				if (isCorrect && this.userAnswers === qindex) {
-					return { "correct-answer": true };
+					return { 'correct-answer': true };
 				} else if (this.userAnswers === qindex) {
-					return { "incorrect-answer": true };
+					return { 'incorrect-answer': true };
 				}
-			} else if (this.data.question_type === "multiple-select") {
+			} else if (this.data.question_type === 'multiple-select') {
 				if (isCorrect === true) {
-					return { "correct-answer": true };
+					return { 'correct-answer': true };
 				} else if (isCorrect === false) {
-					return { "incorrect-answer": true };
+					return { 'incorrect-answer': true };
 				}
 			}
 			return {};
@@ -462,6 +496,14 @@ export default {
 				this.userAnswers = {};
 			}
 			this.userAnswers[qindex] = event.target.checked;
+		},
+		checkWithEnter(qindex) {
+			// Handle checking the checkbox on Enter key press
+			if (this.data.question_type === 'single-select') {
+				this.handleAnswerChange(qindex);
+			} else if (this.data.question_type === 'multiple-select') {
+				this.userAnswers[qindex] = !this.userAnswers[qindex];
+			}
 		},
 	},
 	mounted() {
@@ -567,5 +609,17 @@ label {
 .CorrectFeedback .feedback-icon::after {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
+}
+
+button.btn.btn-secondary.btn-fix:focus {
+	box-shadow: 0 0 0 2px #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:focus {
+	outline: 2px solid #006fbf;
+}
+
+button.btn.btn-primary.btn-primary-fix:hover:focus {
+	border: 1px solid white;
 }
 </style>
