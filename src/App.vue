@@ -204,7 +204,6 @@ export default {
 <style>
 /* General styles */
 :root {
-	/* school colours */
 	--school-purple: #3f2a56;
 	--school-purple-drk: #18032f;
 	--slate-blue: #4e5b73;
