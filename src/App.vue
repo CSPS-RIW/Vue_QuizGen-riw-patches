@@ -486,7 +486,7 @@ ul {
 
 /*  Button styles  */
 button.btn.btn-secondary:focus,
-button.btn.btn-secondary:hover {
+button.btn.btn-secondary:hover:not(:disabled) {
 	border: 1px solid #fff;
 	outline: 2px solid #006fbf;
 	color: #fff;
@@ -494,7 +494,7 @@ button.btn.btn-secondary:hover {
 }
 
 button.btn.btn-primary:focus,
-button.btn.btn-primary:hover {
+button.btn.btn-primary:hover:not(:disabled) {
 	outline: 2px solid #006fbf;
 	border: 1px solid white;
 	background-color: var(--school-purple);
