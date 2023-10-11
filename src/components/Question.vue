@@ -392,6 +392,7 @@ export default {
 			} else {
 				this.userAnswers = null;
 			}
+			this.setFocus()
 		},
 
 		checkIfCorrect(question, userAnswer) {
