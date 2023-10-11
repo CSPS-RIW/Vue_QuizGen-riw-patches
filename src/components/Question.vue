@@ -155,20 +155,19 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary btn-fix" v-if="!preventChangingAnswers && isSubmitted && !isCorrect"
-				@click="reset">
+			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted && !isCorrect" @click="reset">
 				{{ $t("question.retry") }}
 			</button>
-			<button class="btn btn-primary btn-primary-fix" v-else :disabled="preventNextChange" @click="submit">
+			<button class="btn btn-primary " v-else :disabled="preventNextChange" @click="submit">
 				{{ $t("question.submit") }}
 			</button>
 		</div>
 
 		<div v-if="!(index === 0 && index === lastIndex)" class="navigation-control">
-			<button class="btn btn-secondary btn-fix" @click="previous" :disabled="index === 0">
+			<button class="btn btn-secondary" @click="previous" :disabled="index === 0">
 				{{ $t("question.previous") }}
 			</button>
-			<button class="btn btn-secondary btn-fix" :disabled="index === lastIndex" @click="next">
+			<button class="btn btn-secondary" :disabled="index === lastIndex" @click="next">
 				{{ $t("question.next") }}
 			</button>
 		</div>
@@ -612,15 +611,5 @@ label {
 	padding: 0px 0px 0px 7px;
 }
 
-button.btn.btn-secondary.btn-fix:focus {
-	box-shadow: 0 0 0 2px #006fbf;
-}
 
-button.btn.btn-primary.btn-primary-fix:focus {
-	outline: 2px solid #006fbf;
-}
-
-button.btn.btn-primary.btn-primary-fix:hover:focus {
-	border: 1px solid white;
-}
 </style>
