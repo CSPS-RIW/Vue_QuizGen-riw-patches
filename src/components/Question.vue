@@ -1,5 +1,5 @@
 ﻿<template>
-	<div class="quiz" v-if="data">
+	<div class="quiz" v-if="data" tabindex="-1">
 		<div v-if="data.question_type === 'single-select'">
 			<div id="Header" class="header">
 				<div>
@@ -312,11 +312,17 @@ export default {
 			this.storeQuestionState(this.index);
 			this.isCorrect = false;
 			this.$emit("next");
+			this.setFocus()
 		},
 		previous() {
 			// Store the state of userAnswers and submitted arrays
 			this.storeQuestionState(this.index);
 			this.$emit("previous");
+			this.setFocus()
+		},
+		setFocus() {
+			let quizBody = document.querySelector('.quiz');
+			quizBody.focus();
 		},
 		storeQuestionState() {
 			this.answerStates = {
@@ -540,6 +546,11 @@ export default {
 </script>
 
 <style scoped>
+/* Style quiz when focused */
+.quiz[tabindex='-1']:focus-visible {
+	outline: 2px solid var(--body-grey) !important;
+}
+
 .correct-answer {
 	color: green;
 }
@@ -610,6 +621,4 @@ label {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
 }
-
-
 </style>
