@@ -218,7 +218,7 @@ export default {
 	--hyperlink-hover: #0535d2;
 	--hyperlink-visited: #7834bc;
 	--hyperlink-menu: #337ab7;
-	--disabled: #8d8d8d;
+	--disabled: #6c6c6c;
 	--input-gradient: linear-gradient(to bottom, #e6e5e5, #fff 50%);
 	--input-box-shadow: 0px 0px 8px 4px #3b99fc, 2px 5px 16px 0px #0b325e,
 		0px 0px 21px 5px rgba(125, 195, 255, 0.3);
@@ -426,7 +426,6 @@ input[type='radio']:focus+label::before {
 input[type='radio']:not(:disabled)+label:hover::before {
 	border: 4px solid var(--white-heat);
 	background-image: var(--input-gradient);
-	/* border-color: #000000; */
 }
 
 /* disabled input styles */
@@ -487,12 +486,10 @@ input[type='checkbox']+label::before {
 
 input[type='checkbox']:checked+label::before {
 	background-color: var(--white-heat);
-	/* border-color: #000000; */
 }
 
 input[type='checkbox']:not(:disabled)+label:hover::before {
 	background-image: var(--input-gradient);
-	/* border-color: #000000; */
 }
 
 input[type='checkbox']:checked+label::after {
