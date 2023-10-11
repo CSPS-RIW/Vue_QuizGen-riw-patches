@@ -155,7 +155,8 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted && !isCorrect" @click="reset">
+			<button class="btn btn-secondary btn-retry" v-if="!preventChangingAnswers && isSubmitted && !isCorrect"
+				@click="reset">
 				{{ $t("question.retry") }}
 			</button>
 			<button class="btn btn-primary " v-else :disabled="preventNextChange" @click="submit">
@@ -339,6 +340,15 @@ export default {
 				this.initializeUserAnswers();
 			}
 		},
+		findNextAvailableBtn(e) {
+			// Find the next available button to focus on it
+			// Retry btn won't focus since it isn't in the dom
+			let retryBtn = document.querySelector('.button-control .btn-retry');
+
+			// if answer is correct, focus on next btn, else focus on retry btn
+			let availableBtn = this.isCorrect ? document.querySelector(`.${e.classList[0]} .navigation-control button:not(:disabled)`) : retryBtn;
+			availableBtn.focus();
+		},
 
 		submit() {
 			// Check if the user hasn't selected an answer
@@ -371,6 +381,7 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
+			this.findNextAvailableBtn(this.$el);
 		},
 
 		reset() {
