@@ -140,7 +140,7 @@
 				:data_categories="mappedData.categories" @submit="handleDragDropSubmit"></drag-drop-activity>
 		</div>
 
-		<div class="quiz-body" aria-live="polite">
+		<div class="quiz-body quiz-feedback-body" aria-live="polite" tabindex="-1">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
 					">
@@ -340,14 +340,15 @@ export default {
 				this.initializeUserAnswers();
 			}
 		},
-		findNextAvailableBtn(e) {
+		nextAvailableFocusableElement(e) {
 			// Find the next available button to focus on it
-			// Retry btn won't focus since it isn't in the dom
-			let retryBtn = document.querySelector('.button-control .btn-retry');
+			let feedbackDiv = document.querySelector('.quiz-feedback-body');
 
-			// if answer is correct, focus on next btn, else focus on retry btn
-			let availableBtn = this.isCorrect ? document.querySelector(`.${e.classList[0]} .navigation-control button:not(:disabled)`) : retryBtn;
-			availableBtn.focus();
+			// if answer is correct, focus on next btn, else focus on feedback div
+			let focusableElement = this.isCorrect ? document.querySelector(`.${e.classList[0]} .navigation-control button:not(:disabled)`) : feedbackDiv;
+			focusableElement.focus();
+
+
 		},
 
 		submit() {
@@ -381,7 +382,7 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
-			this.findNextAvailableBtn(this.$el);
+			this.nextAvailableFocusableElement(this.$el);
 		},
 
 		reset() {
