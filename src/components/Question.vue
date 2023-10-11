@@ -1,5 +1,5 @@
 ﻿<template>
-	<div class="quiz" v-if="data">
+	<div class="quiz" v-if="data" tabindex="-1">
 		<div v-if="data.question_type === 'single-select'">
 			<div id="Header" class="header">
 				<div>
@@ -140,7 +140,7 @@
 				:data_categories="mappedData.categories" @submit="handleDragDropSubmit"></drag-drop-activity>
 		</div>
 
-		<div class="quiz-body" aria-live="polite">
+		<div class="quiz-body quiz-feedback-body" aria-live="polite" tabindex="-1">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
 					">
@@ -155,7 +155,8 @@
 		</div>
 
 		<div class="quiz-body button-control">
-			<button class="btn btn-secondary" v-if="!preventChangingAnswers && isSubmitted && !isCorrect" @click="reset">
+			<button class="btn btn-secondary btn-retry" v-if="!preventChangingAnswers && isSubmitted && !isCorrect"
+				@click="reset">
 				{{ $t("question.retry") }}
 			</button>
 			<button class="btn btn-primary " v-else :disabled="preventNextChange" @click="submit">
@@ -312,11 +313,17 @@ export default {
 			this.storeQuestionState(this.index);
 			this.isCorrect = false;
 			this.$emit("next");
+			this.setFocus()
 		},
 		previous() {
 			// Store the state of userAnswers and submitted arrays
 			this.storeQuestionState(this.index);
 			this.$emit("previous");
+			this.setFocus()
+		},
+		setFocus() {
+			let quizBody = document.querySelector('.quiz');
+			quizBody.focus();
 		},
 		storeQuestionState() {
 			this.answerStates = {
@@ -332,6 +339,16 @@ export default {
 			} else {
 				this.initializeUserAnswers();
 			}
+		},
+		nextAvailableFocusableElement(e) {
+			// Find the next available button to focus on it
+			let feedbackDiv = document.querySelector('.quiz-feedback-body');
+
+			// if answer is correct, focus on next btn, else focus on feedback div
+			let focusableElement = this.isCorrect ? document.querySelector(`.${e.classList[0]} .navigation-control button:not(:disabled)`) : feedbackDiv;
+			focusableElement.focus();
+
+
 		},
 
 		submit() {
@@ -365,6 +382,7 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
+			this.nextAvailableFocusableElement(this.$el);
 		},
 
 		reset() {
@@ -374,6 +392,7 @@ export default {
 			} else {
 				this.userAnswers = null;
 			}
+			this.setFocus()
 		},
 
 		checkIfCorrect(question, userAnswer) {
@@ -540,6 +559,11 @@ export default {
 </script>
 
 <style scoped>
+/* Style quiz when focused */
+.quiz[tabindex='-1']:focus-visible {
+	outline: 2px solid var(--body-grey) !important;
+}
+
 .correct-answer {
 	color: green;
 }
@@ -610,6 +634,4 @@ label {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
 }
-
-
 </style>
