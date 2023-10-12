@@ -249,16 +249,6 @@ export default {
 	padding-top: 0;
 }
 
-.question-text {
-	position: relative;
-	display: block;
-	text-align: left;
-	font-size: 1.3em;
-	color: var(--body-grey);
-	margin-bottom: 15px;
-	padding: 1.4rem 0.7rem;
-}
-
 #app ol,
 ul {
 	padding-inline-start: 0;

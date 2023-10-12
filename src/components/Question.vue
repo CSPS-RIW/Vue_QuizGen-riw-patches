@@ -3,7 +3,8 @@
 		<div v-if="data.question_type === 'single-select'">
 			<div id="Header" class="header">
 				<div>
-					<span class="question-text">{{ data.question_text }}</span>
+					<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+						data.question_text }}</span>
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
@@ -39,7 +40,8 @@
 			">
 			<div id="Header" class="header">
 				<div>
-					<span class="question-text">{{ data.question_text }}</span>
+					<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+						data.question_text }}</span>
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
@@ -80,7 +82,8 @@
 
 		<div v-if="data.question_type === 'true-false'">
 			<div id="Header" class="header">
-				<span class="question-text">{{ data.question_text }}</span>
+				<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+					data.question_text }}</span>
 				<div class="quiz-progressbar"></div>
 			</div>
 			<div class="quiz-body">
@@ -559,6 +562,22 @@ export default {
 </script>
 
 <style scoped>
+/* Style question text based on its length */
+.header .question-text {
+	position: relative;
+	display: block;
+	text-align: left;
+	font-size: 1.3em;
+	color: var(--body-grey);
+	margin-bottom: 15px;
+	padding: 1.4rem 0.7rem;
+}
+
+.header .question-text.center-text {
+	text-align: center;
+
+}
+
 /* Style quiz when focused */
 .quiz[tabindex='-1']:focus-visible {
 	outline: 2px solid var(--body-grey) !important;
