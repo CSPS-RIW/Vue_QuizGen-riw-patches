@@ -562,7 +562,38 @@ export default {
 </script>
 
 <style scoped>
-/* Style question text based on its length */
+/* Style question header*/
+
+.header {
+	padding: 1.5rem 1.4rem 1rem;
+	position: relative;
+	border-bottom: 1px solid var(--white-heat);
+}
+
+.header::before {
+	align-items: center;
+	color: #000000;
+	content: '?';
+	display: flex;
+	font-size: 2em;
+	height: 60px;
+	justify-content: center;
+	left: 50%;
+	line-height: 60px;
+	position: absolute;
+	top: -30px;
+	width: 80px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transform: translate(-50%);
+	background-color: var(--white-heat);
+	border-radius: 20px;
+	border-top: 2px solid var(--off-white);
+	border-bottom: 2px solid var(--white-heat);
+}
+
 .header .question-text {
 	position: relative;
 	display: block;
@@ -580,6 +611,11 @@ export default {
 
 /* Style quiz when focused */
 .quiz[tabindex='-1']:focus-visible {
+	outline: 2px solid var(--body-grey) !important;
+}
+
+/* style feedback body when focused */
+.quiz-feedback-body[tabindex='-1']:focus-visible {
 	outline: 2px solid var(--body-grey) !important;
 }
 
