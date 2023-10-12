@@ -3,8 +3,8 @@
 		<div v-if="data.question_type === 'single-select'">
 			<div id="Header" class="header">
 				<div>
-					<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
-						data.question_text }}</span>
+					<h2 class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+						data.question_text }}</h2>
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
@@ -40,8 +40,8 @@
 			">
 			<div id="Header" class="header">
 				<div>
-					<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
-						data.question_text }}</span>
+					<h2 class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+						data.question_text }}</h2>
 				</div>
 				<div class="quiz-progressbar"></div>
 			</div>
@@ -82,8 +82,8 @@
 
 		<div v-if="data.question_type === 'true-false'">
 			<div id="Header" class="header">
-				<span class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
-					data.question_text }}</span>
+				<h2 class="question-text" :class="data.question_text.split(' ').length < 8 && 'center-text'">{{
+					data.question_text }}</h2>
 				<div class="quiz-progressbar"></div>
 			</div>
 			<div class="quiz-body">
