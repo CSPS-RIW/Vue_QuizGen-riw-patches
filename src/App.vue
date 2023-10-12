@@ -73,6 +73,7 @@ export default {
 			userAnswers: [],
 			isQuizDataLoaded: false,
 			savedAnswer: {},
+			dynamicData: document.querySelector('body').getAttribute('data-quizData')
 		};
 	},
 	computed: {
@@ -122,14 +123,24 @@ export default {
 		},
 
 		async loadQuizData() {
+			// use the data-quizData from body to dynamically fetch content
+			/*******************************************************
+			 ** TO LOAD CONTENT FROM BS, YOU NEED THE PATH STARTING FROM:
+			 ** `/content/enforced/'your course shell'/'path to wherever you saved the quizGen'`
+			********************************************************/
+			// let currentDataEn = (`/content/enforced/8643-INC101-DEV-EN/quizzes/${this.dynamicData}_en.txt`)
+			// let currentDataFr = (`/content/enforced/8643-INC101-DEV-EN/quizzes/${this.dynamicData}_fr.txt`)
+
+			// For local testing comment this out and use above method 
+			// to load content from BS
+			let currentDataEn = `${this.dynamicData}_en.txt`
+			let currentDataFr = `${this.dynamicData}_fr.txt`
 			try {
-				// const response_en = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_en.txt");
-				const response_en = await fetch('QuizData_en.txt');
+				const response_en = await fetch(currentDataEn);
 				const rawData_en = await response_en.text();
 				this.quizData_en = JSON.parse(JSON.parse(rawData_en));
 
-				// const response_fr = await fetch("/content/enforced/12481-SB-Noam_Stulberg/test/QuizData_fr.txt");
-				const response_fr = await fetch('QuizData_fr.txt');
+				const response_fr = await fetch(currentDataFr);
 				const rawData_fr = await response_fr.text();
 				this.quizData_fr = JSON.parse(JSON.parse(rawData_fr));
 				const RandomOrder = Math.random() - 0.5;
