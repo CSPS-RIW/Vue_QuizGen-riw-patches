@@ -343,15 +343,11 @@ export default {
 				this.initializeUserAnswers();
 			}
 		},
-		nextAvailableFocusableElement(e) {
+		feedbackDivFocus() {
 			// Find the next available button to focus on it
 			let feedbackDiv = document.querySelector('.quiz-feedback-body');
 
-			// if answer is correct, focus on next btn, else focus on feedback div
-			let focusableElement = this.isCorrect ? document.querySelector(`.${e.classList[0]} .navigation-control button:not(:disabled)`) : feedbackDiv;
-			focusableElement.focus();
-
-
+			feedbackDiv.focus();
 		},
 
 		submit() {
@@ -385,7 +381,7 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
-			this.nextAvailableFocusableElement(this.$el);
+			this.feedbackDivFocus();
 		},
 
 		reset() {
