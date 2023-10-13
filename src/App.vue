@@ -2,7 +2,9 @@
 	<div id="quiz">
 		<div v-if="isQuizDataLoaded">
 			<div v-if="quizData.allowLanguageSwitching" class="language-toggle">
-				<button class="btn btn-secondary" @click="toggleLanguage">{{ buttonText }}</button>
+				<button class="btn btn-secondary" @click="toggleLanguage" :title="$t('button.langToggle')"
+					:lang="$i18n.locale === 'en' ? 'fr' : 'en'">{{ buttonText
+					}}</button>
 			</div>
 			<div v-if="quizData.quiz_title">
 				<h1>{{ quizData.quiz_title }}</h1>
