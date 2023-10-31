@@ -211,6 +211,8 @@ export default {
 	},
 	created() {
 		this.loadQuizData();
+		let docLang = document.querySelector('html').getAttribute('lang');
+		this.$i18n.locale = docLang;
 	},
 };
 </script>
