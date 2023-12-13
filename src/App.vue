@@ -485,17 +485,4 @@ input[type='checkbox']:disabled+label::before {
 
 }
 
-@media screen and (-ms-high-contrast: active) {
-	input[type='radio']:checked+label::after {
-	content: '';
-	display: block;
-	width: 26px;
-	height: 26px;
-	position: absolute;
-	left: 5px;
-	top: 5px;
-	border-radius: 50%;
-	background-color: green;
-}
-}
 </style>
