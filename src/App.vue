@@ -388,6 +388,7 @@ input[type='radio']:checked+label::after {
 	left: 5px;
 	top: 5px;
 	border-radius: 50%;
+	border: 13px solid #444;
 	background-color: #444;
 }
 
@@ -398,7 +399,7 @@ input[type='radio']:focus+label::before {
 }
 
 input[type='radio']:not(:disabled)+label:hover::before {
-	border: 4px solid var(--white-heat);
+	border: 3px solid var(--white-heat);
 	background-image: var(--input-gradient);
 }
 
@@ -483,4 +484,5 @@ input[type='checkbox']:disabled+label::before {
 	--_box-shadow: var(--disabled);
 
 }
+
 </style>
