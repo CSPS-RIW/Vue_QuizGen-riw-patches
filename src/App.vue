@@ -408,13 +408,18 @@ input[type='radio']:disabled,
 input[type='radio']:disabled+label,
 input[type='checkbox']:disabled,
 input[type='checkbox']:disabled+label {
-	cursor: default;
+	cursor: not-allowed;
 	color: var(--disabled);
+}
+
+input[type='radio']:disabled+label::before {
+	outline: 2px solid var(--disabled);
 }
 
 input[type='radio']:disabled+label::after {
 	background-color: var(--disabled);
-	cursor: default !important;
+	border-color: var(--disabled);
+	cursor: not-allowed;
 }
 
 
