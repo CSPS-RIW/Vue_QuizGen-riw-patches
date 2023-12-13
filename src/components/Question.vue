@@ -673,6 +673,7 @@ label {
 .IncorrectFeedback .feedback-icon::after {
 	content: '\2716';
 	padding: 0px 0px 0px 7px;
+	outline: 2px solid #ffffff00;
 }
 
 .CorrectFeedback {
@@ -684,6 +685,7 @@ label {
 .CorrectFeedback .feedback-icon::after {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
+	outline: 2px solid #ffffff00;
 }
 
 
