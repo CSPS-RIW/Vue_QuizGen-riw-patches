@@ -16,21 +16,35 @@
 						<input :key="qindex" type="radio" :id="`option-${qindex}`" :name="`question-${index}`"
 							:value="qindex" :checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
-							? answerClasses(qindex)
-							: ''
-							">
+						<label :for="`option-${qindex}`" :class="{
+						'correct-answer':
+							displayIndividualOptionFeedback &&
+							isAnswerCorrect(qindex) === true &&
+							userAnswers === qindex,
+						'incorrect-answer':
+							displayIndividualOptionFeedback &&
+							isAnswerCorrect(qindex) === false &&
+							userAnswers === qindex,
+						}">
 							{{ option.text }}
-							<span v-if="displayIndividualOptionFeedback &&
-								userAnswers !== undefined &&
-								isAnswerCorrect(qindex) === true &&
-								userAnswers === qindex
-								" class="checkmark">&#10003;</span>
-							<span v-else-if="displayIndividualOptionFeedback &&
-								userAnswers !== undefined &&
-								isAnswerCorrect(qindex) === false &&
-								userAnswers === qindex
-								" class="xmark">&#10007;</span>
+							<span
+              v-if="displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === true &&
+                userAnswers === qindex"
+              class="checkmark"
+            >&#10003;</span>
+			<span
+              v-else-if="displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === false &&
+                userAnswers === qindex"
+              class="xmark"
+            >&#10007;</span>
+			<div
+              v-if="displayIndividualOptionFeedback && option.feedback"
+              class="option-feedback"
+            >
+              {{ option.feedback }}
+            </div>
 						</label>
 					</div>
 				</fieldset>
@@ -47,37 +61,54 @@
 			</div>
 
 			<div class="quiz-body">
-				<fieldset>
-					<legend>{{ data.instructions }}</legend>
-
-					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
-						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
-							:disabled="preventNextChange" @change="
-								updateMultipleSelectAnswer(
-									$event,
-									index,
-									qindex,
-								)
-								" @keyup.enter="checkWithEnter(qindex)" />
-						<label :for="`option-${qindex}`" :class="{
-							'correct-answer':
-								displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === true,
-							'incorrect-answer':
-								displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === false,
-						}">
-							{{ option.text }}
-							<span v-if="displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === true
-								" class="checkmark">&#10003;</span>
-							<span v-else-if="displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === false
-								" class="xmark">&#10007;</span>
-						</label>
-					</div>
-				</fieldset>
-			</div>
+      <fieldset>
+        <legend>{{ data.instructions }}</legend>
+        <div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
+          <input
+            type="checkbox"
+            v-model="userAnswers[qindex]"
+            :value="qindex"
+            :id="`option-${qindex}`"
+            :disabled="preventNextChange"
+            @change="updateMultipleSelectAnswer($event, index, qindex)"
+            @keyup.enter="checkWithEnter(qindex)"
+          />
+          <label
+            :for="`option-${qindex}`"
+            :class="{
+              'correct-answer':
+                displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === true,
+              'incorrect-answer':
+                displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === false,
+            }"
+          >
+            {{ option.text }}
+            <span
+              v-if="displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === true"
+              class="checkmark"
+            >
+              &#10003; hello
+            </span>
+            <span
+              v-else-if="displayIndividualOptionFeedback &&
+                isAnswerCorrect(qindex) === false"
+              class="xmark"
+            >
+              &#10007; hello
+            </span>
+            <div
+              v-if="displayIndividualOptionFeedback && option.feedback"
+              class="option-feedback"
+            >
+              {{ option.feedback }}
+            </div>
+          </label>
+        </div>
+      </fieldset>
+    </div>
 		</div>
 
 		<div v-if="data.question_type === 'true-false'">
@@ -258,13 +289,12 @@ export default {
 	},
 	methods: {
 		handleAnswerChange(optionIndex) {
-			if (this.data.question_type === 'multiple-select') {
-				this.userAnswers[optionIndex] =
-					!this.userAnswers[optionIndex];
-			} else {
-				this.userAnswers = optionIndex;
-			}
-		},
+      if (this.data.question_type === 'multiple-select') {
+        this.userAnswers[optionIndex] = !this.userAnswers[optionIndex];
+      } else {
+        this.userAnswers = optionIndex;
+      }
+    },
 		handleFillInTheBlanks(answers) {
 			this.userAnswers = answers;
 		},
