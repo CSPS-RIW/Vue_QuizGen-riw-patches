@@ -74,24 +74,23 @@
             @keyup.enter="checkWithEnter(qindex)"
           />
           <label
-            :for="`option-${qindex}`"
-            :class="{
-              'correct-answer':
-                displayIndividualOptionFeedback &&
-                isAnswerCorrect(qindex) === true,
-              'incorrect-answer':
-                displayIndividualOptionFeedback &&
-                isAnswerCorrect(qindex) === false,
-            }"
-          >
+    :for="`option-${qindex}`"
+    :class="{
+      'correct-answer':
+        displayIndividualOptionFeedback &&
+        isAnswerCorrect(qindex) === true,
+      'incorrect-answer':
+        displayIndividualOptionFeedback &&
+        isAnswerCorrect(qindex) === false,
+    }"
+  >
             {{ option.text }}
-            <span
-              v-if="displayIndividualOptionFeedback &&
-                isAnswerCorrect(qindex) === true"
-              class="checkmark"
-            >
-              &#10003; hello
-            </span>
+            <span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true" class="checkmark">&#10003;</span>
+    <span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false" class="xmark">&#10007;</span>
+    <!-- Display feedback -->
+    <div v-if="displayIndividualOptionFeedback && option.feedback" class="option-feedback">
+      {{ option.feedback }}
+    </div>
             <span
               v-else-if="displayIndividualOptionFeedback &&
                 isAnswerCorrect(qindex) === false"
@@ -225,7 +224,7 @@ export default {
 		index: Number,
 		lastIndex: Number,
 		preventChangingAnswers: Boolean,
-		displayIndividualOptionFeedback: Boolean,
+		displayIndividualOptionFeedback: {type: Boolean, default: false},
 		savedAnswer: Object,
 	},
 	data() {

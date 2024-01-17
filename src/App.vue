@@ -187,6 +187,12 @@ export default {
 		},
 		submitQuiz(answer, questionIndex) {
 			this.userAnswers[questionIndex] = answer;
+			// Set displayIndividualOptionFeedback to true when the question is submitted
+			this.$set(this.quizData.questions, questionIndex, {
+			...this.quizData.questions[questionIndex],
+			displayIndividualOptionFeedback: true,
+			});
+
 		},
 		calculateScore() {
 			return this.userAnswers.reduce((score, answer) => {
