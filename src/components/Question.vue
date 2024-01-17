@@ -73,7 +73,7 @@
 								class="xmark">&#10007;</span> -->
 							<!-- Display feedback -->
 							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
-								:class="[isAnswerCorrect(qindex) ? 'CorrectFeedback' : 'IncorrectFeedback']">
+								:class="[isAnswerCorrect(qindex) ? 'CorrectFeedback' : 'IncorrectFeedback']" class="individual-feedback">
 								<span class="feedback-icon" aria-hidden="true"></span>
 								{{ option.feedback }}
 							</div>
@@ -643,6 +643,11 @@ label {
 }
 
 /* Feedback styles */
+
+.individual-feedback {
+	margin-top: 1rem;
+}
+
 .CorrectFeedback,
 .IncorrectFeedback{
 	position: relative;
