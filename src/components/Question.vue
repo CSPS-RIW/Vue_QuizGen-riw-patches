@@ -67,13 +67,14 @@
 								isAnswerCorrect(qindex) === false,
 						}">
 							{{ option.text }}
-							<span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
+							<!-- <span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
 								class="checkmark">&#10003;</span>
 							<span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"
-								class="xmark">&#10007;</span>
+								class="xmark">&#10007;</span> -->
 							<!-- Display feedback -->
 							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
 								:class="[isAnswerCorrect(qindex) ? 'CorrectFeedback' : 'IncorrectFeedback']">
+								<span class="feedback-icon" aria-hidden="true"></span>
 								{{ option.feedback }}
 							</div>
 							<span v-else-if="displayIndividualOptionFeedback &&
