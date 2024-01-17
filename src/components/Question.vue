@@ -88,7 +88,7 @@
             <span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true" class="checkmark">&#10003;</span>
     <span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false" class="xmark">&#10007;</span>
     <!-- Display feedback -->
-    <div v-if="displayIndividualOptionFeedback && option.feedback" class="option-feedback">
+    <div v-if="displayIndividualOptionFeedback && this.submitted[qindex]" class="option-feedback">
       {{ option.feedback }}
     </div>
             <span
@@ -96,14 +96,9 @@
                 isAnswerCorrect(qindex) === false"
               class="xmark"
             >
-              &#10007; hello
+              
             </span>
-            <div
-              v-if="displayIndividualOptionFeedback && option.feedback"
-              class="option-feedback"
-            >
-              {{ option.feedback }}
-            </div>
+            
           </label>
         </div>
       </fieldset>

@@ -21,7 +21,7 @@
   :lastIndex="quizData.questions.length - 1"
   :preventChangingAnswers="quizData.prevent_changing_answers"
   :savedAnswer="savedAnswer[currentQuestionIndex]"
-  :displayIndividualOptionFeedback="quizData.display_individual_option_feedback"
+  :displayIndividualOptionFeedback="quizData.displayIndividualOptionFeedback"
   @next="nextQuestion"
   @previous="previousQuestion"
   @update-results="updateResults"
@@ -187,11 +187,7 @@ export default {
 		},
 		submitQuiz(answer, questionIndex) {
 			this.userAnswers[questionIndex] = answer;
-			// Set displayIndividualOptionFeedback to true when the question is submitted
-			this.$set(this.quizData.questions, questionIndex, {
-			...this.quizData.questions[questionIndex],
-			displayIndividualOptionFeedback: true,
-			});
+			
 
 		},
 		calculateScore() {
