@@ -449,7 +449,8 @@ input[type='checkbox']:focus+label::before {
 }
 
 input[type='checkbox']+label {
-	display: block;
+	display: grid;
+	grid-template-columns: 1fr 0.1fr;
 	position: relative;
 	padding-left: 50px;
 	padding-bottom: 20px;

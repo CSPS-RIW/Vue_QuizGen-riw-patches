@@ -67,14 +67,13 @@
 								isAnswerCorrect(qindex) === false,
 						}">
 							{{ option.text }}
-							<!-- <span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
-								class="checkmark">&#10003;</span>
+							<span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
+								class="checkmark" aria-label="Correct">&#10003;</span>
 							<span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"
-								class="xmark">&#10007;</span> -->
+								class="xmark" aria-label="Incorrect">&#10007;</span>
 							<!-- Display feedback -->
 							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
-								:class="[isAnswerCorrect(qindex) ? 'CorrectFeedback' : 'IncorrectFeedback']" class="individual-feedback">
-								<span class="feedback-icon" aria-hidden="true"></span>
+								:class="[isAnswerCorrect(qindex) ? 'individual-feedback-correct' : 'individual-feedback-incorrect']" class="individual-feedback">
 								{{ option.feedback }}
 							</div>
 							<span v-else-if="displayIndividualOptionFeedback &&
@@ -632,10 +631,12 @@ export default {
 
 .checkmark {
 	margin-left: 5px;
+	color: #18703a;
 }
 
 .xmark {
 	margin-left: 5px;
+	color: #9e0404;
 }
 
 label {
@@ -646,6 +647,20 @@ label {
 
 .individual-feedback {
 	margin-top: 1rem;
+	outline-style: solid;
+	outline-width: 2px;
+	color: var(--feedback-colour);
+	outline-color: var(--border-feedback-bg-colour);
+	padding: 1rem 1.5rem;
+	border-radius: 12px;
+}
+
+.individual-feedback-correct {
+	--border-feedback-bg-colour: #18703a;
+}
+
+.individual-feedback-incorrect {
+	--border-feedback-bg-colour: #9e0404;
 }
 
 .CorrectFeedback,
