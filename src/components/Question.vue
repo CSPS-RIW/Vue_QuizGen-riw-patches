@@ -29,7 +29,7 @@
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === true &&
-								userAnswers === qindex" class="checkmark">&#10003;</span>
+								userAnswers === qindex" class="checkmark"></span>
 							<span v-else-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === false &&
 								userAnswers === qindex" class="xmark">&#10007;</span>
@@ -54,7 +54,7 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper" tabindex="-1">
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
 							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)"
 							@keyup.enter="checkWithEnter(qindex)" />
@@ -68,9 +68,9 @@
 						}">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
-								class="checkmark" aria-label="Correct">&#10003;</span>
+								class="checkmark" aria-label="Correct"></span>
 							<span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"
-								class="xmark" aria-label="Incorrect">&#10007;</span>
+								class="xmark" aria-label="Incorrect"></span>
 							<!-- Display feedback -->
 							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
 								:class="[isAnswerCorrect(qindex) ? 'individual-feedback-correct' : 'individual-feedback-incorrect']" class="individual-feedback">
@@ -352,8 +352,14 @@ export default {
 		feedbackDivFocus() {
 			// Find the next available button to focus on it
 			let feedbackDiv = document.querySelector('.quiz-feedback-body');
-
+			
 			feedbackDiv.focus();
+		},
+		firstOptionFocus() {
+			let options = document.querySelectorAll('.input-wrapper')
+			
+			
+			options[0].focus()
 		},
 
 		submit() {
@@ -387,7 +393,13 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
-			this.feedbackDivFocus();
+			
+
+			if (this.data.question_type === 'multiple-select') {
+				this.firstOptionFocus()
+			} else {
+				this.feedbackDivFocus();
+			}
 		},
 
 		reset() {
@@ -632,11 +644,19 @@ export default {
 .checkmark {
 	margin-left: 5px;
 	color: #18703a;
+	
+	&::before {
+		content: '\2713';
+	}
 }
 
 .xmark {
 	margin-left: 5px;
 	color: #9e0404;
+
+	&::before {
+		content: '\2715';
+	}
 }
 
 label {
