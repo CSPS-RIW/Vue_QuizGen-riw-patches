@@ -161,7 +161,7 @@
 						: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
-					<div class="sr-review-answers" v-if="data.question_type === 'multiple-select'">
+					<div class="sr-only" id="sr_review_answers" v-if="data.question_type === 'multiple-select'">
 						
 							
 								<p>{{ $t('screenreaderFeedback.instructions') }}</p>
