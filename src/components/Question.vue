@@ -73,7 +73,8 @@
 								class="xmark" aria-label="Incorrect"></span>
 							<!-- Display feedback -->
 							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
-								:class="[isAnswerCorrect(qindex) ? 'individual-feedback-correct' : 'individual-feedback-incorrect']" class="individual-feedback">
+								:class="[isAnswerCorrect(qindex) ? 'individual-feedback-correct' : 'individual-feedback-incorrect']"
+								class="individual-feedback">
 								{{ option.feedback }}
 							</div>
 							<span v-else-if="displayIndividualOptionFeedback &&
@@ -160,6 +161,36 @@
 						: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
+					<div class="sr-review-answers" v-if="data.question_type === 'multiple-select'">
+						
+							
+								<p>{{ $t('screenreaderFeedback.instructions') }}</p>
+								<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper"
+									tabindex="-1">
+									<!-- <div :value="qindex" :id="`fb-${qindex}`"></div> -->
+									<div>
+										<span class="">{{ this.userAnswers[qindex] ? $t('screenreaderFeedback.selected') : $t('screenreaderFeedback.notSelected') }}</span>
+										{{ option.text }}
+										<span
+											v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"><span
+												class="sr-only">Correct</span></span>
+										<span
+											v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"><span
+												class="sr-only">Incorrect</span></span>
+										<!-- Display feedback -->
+										<div v-if="displayIndividualOptionFeedback && this.submitted[index]">
+											{{ option.feedback }}
+										</div>
+										<span v-else-if="displayIndividualOptionFeedback &&
+											isAnswerCorrect(qindex) === false">
+
+										</span>
+
+									</div>
+								</div>
+							
+						
+					</div>
 				</div>
 			</div>
 		</div>
@@ -352,15 +383,15 @@ export default {
 		feedbackDivFocus() {
 			// Find the next available button to focus on it
 			let feedbackDiv = document.querySelector('.quiz-feedback-body');
-			
+
 			feedbackDiv.focus();
 		},
-		firstOptionFocus() {
-			let options = document.querySelectorAll('.input-wrapper')
-			
-			
-			options[0].focus()
-		},
+		// firstOptionFocus() {
+		// 	let options = document.querySelectorAll('.input-wrapper')
+
+
+		// 	options[0].focus()
+		// },
 
 		submit() {
 			// Check if the user hasn't selected an answer
@@ -393,13 +424,14 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
-			
 
-			if (this.data.question_type === 'multiple-select') {
-				this.firstOptionFocus()
-			} else {
-				this.feedbackDivFocus();
-			}
+			this.feedbackDivFocus();
+
+			// if (this.data.question_type === 'multiple-select') {
+			// 	this.firstOptionFocus()
+			// } else {
+			// 	this.feedbackDivFocus();
+			// }
 		},
 
 		reset() {
@@ -644,7 +676,7 @@ export default {
 .checkmark {
 	margin-left: 5px;
 	color: #18703a;
-	
+
 	&::before {
 		content: '\2713';
 	}
@@ -684,7 +716,7 @@ label {
 }
 
 .CorrectFeedback,
-.IncorrectFeedback{
+.IncorrectFeedback {
 	position: relative;
 	outline-style: solid;
 	outline-width: 2px;
@@ -733,5 +765,4 @@ label {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
 	outline: 2px solid #ffffff00;
-}
-</style>
+}</style>

@@ -25,6 +25,11 @@
 				'Please select at least one answer before validating.',
 			pleaseSelectEveryTerm: 'Please select every term before validating',
 		},
+		screenreaderFeedback: {
+			instructions: 'Instructions: Review your answers, then select the Retry button to try again, or select the Next button to move on to the next question',
+			selected: 'You selected',
+			notSelected: 'You did not select'
+		}
 	},
 	fr: {
 		quiz: {
@@ -54,5 +59,10 @@
 			pleaseSelectEveryTerm:
 				'Veuillez sélectionner chaque terme avant de valider',
 		},
+		screenreaderFeedback: {
+			instructions: 'Instructions : Vérifiez vos réponses, puis sélectionnez le bouton Réessayer pour réessayer, ou sélectionnez le bouton Suivant pour passer à la question suivante.',
+			selected: 'Vous avez choisi',
+			notSelected: 'Vous n\'avez pas choisi'
+		}
 	},
 };
