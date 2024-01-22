@@ -151,7 +151,7 @@
 				:data_categories="mappedData.categories" @submit="handleDragDropSubmit"></drag-drop-activity>
 		</div>
 
-		<div class="quiz-body quiz-feedback-body" aria-live="polite" tabindex="-1">
+		<div class="quiz-body quiz-feedback-body" tabindex="-1">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
 					">
@@ -162,34 +162,34 @@
 						"></div>
 					<div v-html="data.generic_feedback"></div>
 					<div class="sr-only" id="sr_review_answers" v-if="data.question_type === 'multiple-select'">
-						
-							
-								<p>{{ $t('screenreaderFeedback.instructions') }}</p>
-								<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper"
-									tabindex="-1">
-									<!-- <div :value="qindex" :id="`fb-${qindex}`"></div> -->
-									<div>
-										<span class="">{{ this.userAnswers[qindex] ? $t('screenreaderFeedback.selected') : $t('screenreaderFeedback.notSelected') }}</span>
-										{{ option.text }}
-										<span
-											v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"><span
-												class="sr-only">Correct</span></span>
-										<span
-											v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"><span
-												class="sr-only">Incorrect</span></span>
-										<!-- Display feedback -->
-										<div v-if="displayIndividualOptionFeedback && this.submitted[index]">
-											{{ option.feedback }}
-										</div>
-										<span v-else-if="displayIndividualOptionFeedback &&
-											isAnswerCorrect(qindex) === false">
 
-										</span>
 
-									</div>
+						<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper"
+							tabindex="-1">
+
+							<div>
+								<p class="">{{ this.userAnswers[qindex] ? $t('screenreaderFeedback.selected') :
+									$t('screenreaderFeedback.notSelected') }}</p>
+								<p>{{ option.text }}</p>
+								<p v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true">
+									<span>Correct.</span>
+								</p>
+								<p v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false">
+									<span>Incorrect.</span>
+								</p>
+								<!-- Display feedback -->
+								<div v-if="displayIndividualOptionFeedback && this.submitted[index]">
+									<p>{{ option.feedback }}</p>
 								</div>
-							
-						
+								<p v-else-if="displayIndividualOptionFeedback &&
+									isAnswerCorrect(qindex) === false">
+								<p>What goes in here?</p>
+								</p>
+
+							</div>
+						</div>
+
+
 					</div>
 				</div>
 			</div>
@@ -765,4 +765,5 @@ label {
 	content: '\2714';
 	padding: 0px 0px 0px 7px;
 	outline: 2px solid #ffffff00;
-}</style>
+}
+</style>
