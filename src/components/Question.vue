@@ -32,10 +32,12 @@
 								userAnswers === qindex" class="checkmark"></span>
 							<span v-else-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === false &&
-								userAnswers === qindex" class="xmark">&#10007;</span>
-							<div v-if="displayIndividualOptionFeedback && option.feedback" class="option-feedback">
+								userAnswers === qindex" class="xmark"></span>
+							<!-- 
+								need to add this to implement individual feedback for single select
+								<div v-if="displayIndividualOptionFeedback && option.feedback && this.submitted[index]" class="option-feedback">
 								{{ option.feedback }}
-							</div>
+							</div> -->
 						</label>
 					</div>
 				</fieldset>
@@ -77,10 +79,13 @@
 								class="individual-feedback">
 								{{ option.feedback }}
 							</div>
-							<span v-else-if="displayIndividualOptionFeedback &&
+							<!-- 
+								Can use this if we want incorrect/correct individual feedback.
+
+								<span v-else-if="displayIndividualOptionFeedback &&
 								isAnswerCorrect(qindex) === false" class="xmark">
 
-							</span>
+							</span> -->
 
 						</label>
 					</div>
@@ -110,12 +115,12 @@
 								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === true &&
 								userAnswers === qindex
-								" class="checkmark">&#10003;</span>
+								" class="checkmark"></span>
 							<span v-else-if="displayIndividualOptionFeedback &&
 								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === false &&
 								userAnswers === qindex
-								" class="xmark">&#10007;</span>
+								" class="xmark"></span>
 						</label>
 					</div>
 				</fieldset>
@@ -161,6 +166,7 @@
 						: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
+					<!-- right now, only with multi-select questions. need to do more testing for other question types -->
 					<div class="sr-only" id="sr_review_answers" v-if="data.question_type === 'multiple-select'">
 
 
@@ -181,10 +187,12 @@
 								<div v-if="displayIndividualOptionFeedback && this.submitted[index]">
 									<p>{{ option.feedback }}</p>
 								</div>
-								<p v-else-if="displayIndividualOptionFeedback &&
+								<!-- 
+									If we want to add Correct & Incorrect individual feedback, this would be how we go about it. For now, there's only one individual feedback, regardless of correct or incorrect.
+									<p v-else-if="displayIndividualOptionFeedback &&
 									isAnswerCorrect(qindex) === false">
-								<p>What goes in here?</p>
-								</p>
+								<p></p> 
+								</p>-->
 
 							</div>
 						</div>
