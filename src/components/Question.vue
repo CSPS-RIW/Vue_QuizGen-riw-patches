@@ -16,21 +16,28 @@
 						<input :key="qindex" type="radio" :id="`option-${qindex}`" :name="`question-${index}`"
 							:value="qindex" :checked="userAnswers === qindex" :disabled="preventNextChange"
 							@change="handleAnswerChange(qindex)" />
-						<label :for="`option-${qindex}`" :class="displayIndividualOptionFeedback
-							? answerClasses(qindex)
-							: ''
-							">
+						<label :for="`option-${qindex}`" :class="{
+							'correct-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === true &&
+								userAnswers === qindex,
+							'incorrect-answer':
+								displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false &&
+								userAnswers === qindex,
+						}">
 							{{ option.text }}
 							<span v-if="displayIndividualOptionFeedback &&
-								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === true &&
-								userAnswers === qindex
-								" class="checkmark">&#10003;</span>
+								userAnswers === qindex" class="checkmark"></span>
 							<span v-else-if="displayIndividualOptionFeedback &&
-								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === false &&
-								userAnswers === qindex
-								" class="xmark">&#10007;</span>
+								userAnswers === qindex" class="xmark"></span>
+							<!-- 
+								need to add this to implement individual feedback for single select
+								<div v-if="displayIndividualOptionFeedback && option.feedback && this.submitted[index]" class="option-feedback">
+								{{ option.feedback }}
+							</div> -->
 						</label>
 					</div>
 				</fieldset>
@@ -49,16 +56,10 @@
 			<div class="quiz-body">
 				<fieldset>
 					<legend>{{ data.instructions }}</legend>
-
-					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper">
+					<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper" tabindex="-1">
 						<input type="checkbox" v-model="userAnswers[qindex]" :value="qindex" :id="`option-${qindex}`"
-							:disabled="preventNextChange" @change="
-								updateMultipleSelectAnswer(
-									$event,
-									index,
-									qindex,
-								)
-								" @keyup.enter="checkWithEnter(qindex)" />
+							:disabled="preventNextChange" @change="updateMultipleSelectAnswer($event, index, qindex)"
+							@keyup.enter="checkWithEnter(qindex)" />
 						<label :for="`option-${qindex}`" :class="{
 							'correct-answer':
 								displayIndividualOptionFeedback &&
@@ -68,12 +69,24 @@
 								isAnswerCorrect(qindex) === false,
 						}">
 							{{ option.text }}
-							<span v-if="displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === true
-								" class="checkmark">&#10003;</span>
-							<span v-else-if="displayIndividualOptionFeedback &&
-								isAnswerCorrect(qindex) === false
-								" class="xmark">&#10007;</span>
+							<span v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true"
+								class="checkmark" aria-label="Correct"></span>
+							<span v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false"
+								class="xmark" aria-label="Incorrect"></span>
+							<!-- Display feedback -->
+							<div v-if="displayIndividualOptionFeedback && this.submitted[index]"
+								:class="[isAnswerCorrect(qindex) ? 'individual-feedback-correct' : 'individual-feedback-incorrect']"
+								class="individual-feedback">
+								{{ option.feedback }}
+							</div>
+							<!-- 
+								Can use this if we want incorrect/correct individual feedback.
+
+								<span v-else-if="displayIndividualOptionFeedback &&
+								isAnswerCorrect(qindex) === false" class="xmark">
+
+							</span> -->
+
 						</label>
 					</div>
 				</fieldset>
@@ -102,12 +115,12 @@
 								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === true &&
 								userAnswers === qindex
-								" class="checkmark">&#10003;</span>
+								" class="checkmark"></span>
 							<span v-else-if="displayIndividualOptionFeedback &&
 								userAnswers !== undefined &&
 								isAnswerCorrect(qindex) === false &&
 								userAnswers === qindex
-								" class="xmark">&#10007;</span>
+								" class="xmark"></span>
 						</label>
 					</div>
 				</fieldset>
@@ -143,7 +156,7 @@
 				:data_categories="mappedData.categories" @submit="handleDragDropSubmit"></drag-drop-activity>
 		</div>
 
-		<div class="quiz-body quiz-feedback-body" aria-live="polite" tabindex="-1">
+		<div class="quiz-body quiz-feedback-body" tabindex="-1">
 			<div class="quiz-feedback" v-if="isSubmitted && feedbackRecap">
 				<div :class="isCorrect ? 'CorrectFeedback' : 'IncorrectFeedback'
 					">
@@ -153,6 +166,39 @@
 						: data.incorrect_feedback
 						"></div>
 					<div v-html="data.generic_feedback"></div>
+					<!-- right now, only with multi-select questions. need to do more testing for other question types -->
+					<div class="sr-only" id="sr_review_answers" v-if="data.question_type === 'multiple-select'">
+
+
+						<div v-for="(option, qindex) in data.answer_options" :key="qindex" class="input-wrapper"
+							tabindex="-1">
+
+							<div>
+								<p class="">{{ this.userAnswers[qindex] ? $t('screenreaderFeedback.selected') :
+									$t('screenreaderFeedback.notSelected') }}</p>
+								<p>{{ option.text }}</p>
+								<p v-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === true">
+									<span>Correct.</span>
+								</p>
+								<p v-else-if="displayIndividualOptionFeedback && isAnswerCorrect(qindex) === false">
+									<span>Incorrect.</span>
+								</p>
+								<!-- Display feedback -->
+								<div v-if="displayIndividualOptionFeedback && this.submitted[index]">
+									<p>{{ option.feedback }}</p>
+								</div>
+								<!-- 
+									If we want to add Correct & Incorrect individual feedback, this would be how we go about it. For now, there's only one individual feedback, regardless of correct or incorrect.
+									<p v-else-if="displayIndividualOptionFeedback &&
+									isAnswerCorrect(qindex) === false">
+								<p></p> 
+								</p>-->
+
+							</div>
+						</div>
+
+
+					</div>
 				</div>
 			</div>
 		</div>
@@ -194,7 +240,7 @@ export default {
 		index: Number,
 		lastIndex: Number,
 		preventChangingAnswers: Boolean,
-		displayIndividualOptionFeedback: Boolean,
+		displayIndividualOptionFeedback: { type: Boolean, default: false },
 		savedAnswer: Object,
 	},
 	data() {
@@ -259,8 +305,7 @@ export default {
 	methods: {
 		handleAnswerChange(optionIndex) {
 			if (this.data.question_type === 'multiple-select') {
-				this.userAnswers[optionIndex] =
-					!this.userAnswers[optionIndex];
+				this.userAnswers[optionIndex] = !this.userAnswers[optionIndex];
 			} else {
 				this.userAnswers = optionIndex;
 			}
@@ -349,6 +394,12 @@ export default {
 
 			feedbackDiv.focus();
 		},
+		// firstOptionFocus() {
+		// 	let options = document.querySelectorAll('.input-wrapper')
+
+
+		// 	options[0].focus()
+		// },
 
 		submit() {
 			// Check if the user hasn't selected an answer
@@ -381,7 +432,14 @@ export default {
 			);
 			this.isCorrect = isCorrect;
 			this.$emit('submit', isCorrect, this.index);
+
 			this.feedbackDivFocus();
+
+			// if (this.data.question_type === 'multiple-select') {
+			// 	this.firstOptionFocus()
+			// } else {
+			// 	this.feedbackDivFocus();
+			// }
 		},
 
 		reset() {
@@ -625,10 +683,20 @@ export default {
 
 .checkmark {
 	margin-left: 5px;
+	color: #18703a;
+
+	&::before {
+		content: '\2713';
+	}
 }
 
 .xmark {
 	margin-left: 5px;
+	color: #9e0404;
+
+	&::before {
+		content: '\2715';
+	}
 }
 
 label {
@@ -636,6 +704,25 @@ label {
 }
 
 /* Feedback styles */
+
+.individual-feedback {
+	margin-top: 1rem;
+	outline-style: solid;
+	outline-width: 2px;
+	color: var(--feedback-colour);
+	outline-color: var(--border-feedback-bg-colour);
+	padding: 1rem 1.5rem;
+	border-radius: 12px;
+}
+
+.individual-feedback-correct {
+	--border-feedback-bg-colour: #18703a;
+}
+
+.individual-feedback-incorrect {
+	--border-feedback-bg-colour: #9e0404;
+}
+
 .CorrectFeedback,
 .IncorrectFeedback {
 	position: relative;
@@ -687,6 +774,4 @@ label {
 	padding: 0px 0px 0px 7px;
 	outline: 2px solid #ffffff00;
 }
-
-
 </style>

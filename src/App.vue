@@ -14,12 +14,20 @@
 				<div class="page-info sr-only" aria-live="polite">
 					{{ currentPageInfo }}
 				</div>
-				<Question v-if="!quizFinished" :data="quizData.questions[currentQuestionIndex]"
-					:index="currentQuestionIndex" :lastIndex="quizData.questions.length - 1"
-					:preventChangingAnswers="quizData.prevent_changing_answers"
-					:savedAnswer="savedAnswer[currentQuestionIndex]" :displayIndividualOptionFeedback="quizData.display_individual_option_feedback
-						" @next="nextQuestion" @previous="previousQuestion" @update-results="updateResults" @submit="submitQuiz"
-					@save-answers="storeCurrentAnswer" />
+				<Question
+  v-if="!quizFinished"
+  :data="quizData.questions[currentQuestionIndex]"
+  :index="currentQuestionIndex"
+  :lastIndex="quizData.questions.length - 1"
+  :preventChangingAnswers="quizData.prevent_changing_answers"
+  :savedAnswer="savedAnswer[currentQuestionIndex]"
+  :displayIndividualOptionFeedback="quizData.displayIndividualOptionFeedback"
+  @next="nextQuestion"
+  @previous="previousQuestion"
+  @update-results="updateResults"
+  @submit="submitQuiz"
+  @save-answers="storeCurrentAnswer"
+/>
 				<div class="page-info">{{ currentPageInfo }}</div>
 				<div v-if="quizData.end_quiz_button" class="quizComplete">
 					<button class="btn btn-secondary" v-if="allQuestionsSubmitted" @click="
@@ -179,6 +187,8 @@ export default {
 		},
 		submitQuiz(answer, questionIndex) {
 			this.userAnswers[questionIndex] = answer;
+			
+
 		},
 		calculateScore() {
 			return this.userAnswers.reduce((score, answer) => {
@@ -439,7 +449,8 @@ input[type='checkbox']:focus+label::before {
 }
 
 input[type='checkbox']+label {
-	display: block;
+	display: grid;
+	grid-template-columns: 1fr 0.1fr;
 	position: relative;
 	padding-left: 50px;
 	padding-bottom: 20px;

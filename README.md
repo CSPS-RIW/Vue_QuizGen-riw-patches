@@ -13,6 +13,7 @@ QuizGen is a Vue.js quiz generator component that provides a variety of question
 - Randomize answer options
 - Prevent users from changing answers
 - Display individual option feedback
+    - This now works and will be tested for accessibility by Accessibility team. Currently only for Multiple-Select question type.
 - Save and restore answer states
 
 ## Props
